@@ -1,0 +1,14 @@
+{# Version: 1.0, Created: 2026-03 #}
+TASK: Analyze the student's performance on the topic "{{ topic }}" and provide actionable learning insights.
+
+PERFORMANCE SUMMARY:
+- Score: {{ score }}/{{ total }}
+- Accuracy: {{ accuracy }}%
+
+Respond ONLY with valid JSON in the following format:
+{
+  "strengths": "Short active description of what they did well",
+  "weaknesses": "Specific area where they struggled",
+  "what_to_improve": "1-2 actionable study tips",
+  "recommendation": "A suggested next sub-topic or related concept to study"
+}

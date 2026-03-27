@@ -1,0 +1,12 @@
+{# Version: 1.0, Last updated: 2026-03 #}
+TASK: Generate a structured educational explanation of the following topic.
+TOPIC: {{ topic }}
+SUBJECT AREA: {{ subject | default("General") }}
+Respond ONLY with valid JSON in this exact format:
+{ "definition": "A clear, plain-language definition of {{ topic }}. Aim for at least 2 sentences.", "mechanism": "A detailed explanation of how {{ topic }} works, including key concepts and processes. Aim for at least 3-4 sentences.", "example": "One concrete real-world example that illustrates {{ topic }}." }
+Rules:
+- Return one JSON object only.
+- Ensure each field (definition, mechanism, example) is substantial and informative (at least 15-20 words each).
+- Do not wrap the JSON in markdown fences.
+- Do not include commentary before or after the JSON.
+- If the topic is not a legitimate educational subject, return: { "error": "Topic not recognized as an educational subject. Please enter a specific academic topic." }

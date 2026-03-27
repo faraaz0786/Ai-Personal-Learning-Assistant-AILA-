@@ -1,0 +1,5 @@
+{# Version: 1.0, Last updated: 2026-03 #}
+TASK: Based on a student's learning history, recommend 3 related topics to study next.
+STUDIED TOPICS: {{ topics | join(", ") }}
+QUIZ PERFORMANCE: {{ performance_summary }}
+Respond ONLY with valid JSON: { "recommendations": [ { "topic": "Topic name", "reason": "1 sentence explanation of why this topic is recommended", "type": "prerequisite | related | advanced" } ] }

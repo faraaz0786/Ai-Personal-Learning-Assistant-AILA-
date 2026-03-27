@@ -1,0 +1,15 @@
+{# Version: 1.0, Last updated: 2026-03 #}
+TASK: Generate {{ count | default(5) }} multiple-choice quiz questions about the following topic.
+TOPIC: {{ topic }}
+DIFFICULTY: {{ difficulty | default("medium") }}
+Difficulty guide - easy: recall and recognition; medium: understanding and application; hard: analysis and synthesis.
+Respond ONLY with valid JSON: { "questions": [ { "id": 1, "question": "Question text?", "options": ["Option A", "Option B", "Option C", "Option D"], "correct_index": 0, "explanation": "Why this answer is correct." } ] }
+Rules:
+- Return one JSON object only.
+- Do not wrap the JSON in markdown fences.
+- Do not include commentary before or after the JSON.
+- Each question must have exactly 4 options.
+- correct_index is 0-based.
+- All options must be plausible.
+- No trick questions.
+- Distribute correct answers across all indices.

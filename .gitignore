@@ -1,0 +1,16 @@
+.env
+.pytest_cache/
+__pycache__/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+*.pyc
+*.log
+backend_*.log
+debug_routes.py
+.DS_Store

@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #a14b2b;
+  --primary-foreground: #ffffff;
+  --background: #f5f1eb;
+  --background-secondary: #ede8e1;
+  --surface-border: #e7e1d8;
+  --text-primary: #1c1917;
+  --text-secondary: #6b5e52;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .editorial-heading {
+    font-family: Georgia, serif;
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+  
+  .editorial-accent {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: var(--primary);
+  }
+  
+  .scholarly-card {
+    background-color: #ffffff;
+    border: 1px solid var(--surface-border);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
+
+  .scholarly-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .scholarly-sidebar-link:hover {
+    background-color: var(--background-secondary);
+    color: var(--primary);
+  }
+
+  .scholarly-sidebar-link-active {
+    background-color: var(--background-secondary);
+    color: var(--primary);
+    font-weight: 700;
+  }
+}
+
+/* NUCLEAR OVERRIDE: Force Scholarly Palette over stay indigo/blue stubs */
+@layer utilities {
+  .text-primary-500, .text-indigo-500, .text-indigo-600, .text-blue-500, .text-blue-600 {
+    color: #a14b2b !important;
+  }
+  
+  .bg-primary-500, .bg-indigo-500, .bg-indigo-600, .bg-blue-500, .bg-blue-600 {
+    background-color: #a14b2b !important;
+  }
+
+  .bg-primary-100, .bg-indigo-100, .bg-blue-100 {
+    background-color: #fbece6 !important;
+  }
+
+  .border-primary-500, .border-indigo-500, .border-blue-500 {
+    border-color: #a14b2b !important;
+  }
+
+  .focus\:border-primary-500, .focus\:border-indigo-500, .focus\:border-blue-500 {
+    border-color: #a14b2b !important;
+  }
+
+  .bg-primary-500\/5, .bg-indigo-500\/5, .bg-blue-500\/5 {
+    background-color: rgba(161, 75, 43, 0.05) !important;
+  }
+}
+
+@layer utilities {
+  .bg-ivory-mesh {
+    background-color: #f5f1eb;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(161, 75, 43, 0.02) 0, transparent 50%), 
+      radial-gradient(at 100% 100%, rgba(139, 111, 90, 0.02) 0, transparent 50%);
+  }
+}

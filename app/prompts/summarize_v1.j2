@@ -1,0 +1,9 @@
+{# Version: 1.0, Last updated: 2026-03 #}
+TASK: Generate a concise revision summary of the following explanation.
+TOPIC: {{ topic }}
+EXPLANATION: {{ explanation }}
+Respond ONLY with valid JSON: { "summary": "A single paragraph of 3-5 sentences (60-100 words) suitable for revision notes." }
+Rules:
+- Return one JSON object only.
+- Do not wrap the JSON in markdown fences.
+- Do not include commentary before or after the JSON.
