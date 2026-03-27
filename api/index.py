@@ -1,5 +1,5 @@
-from app.main import app
+from backend.main import app
 
 # Vercel Serverless Function entry point
-# This bridges the FastAPI app to Vercel's Python runtime
+# Bridges the FastAPI app in /backend to Vercel's runtime
 handler = app

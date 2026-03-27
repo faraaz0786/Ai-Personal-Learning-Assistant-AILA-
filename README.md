@@ -1,32 +1,58 @@
-# AILA Enterprise Backend
+# AILA: Scholarly AI Workspace 🎓🤖
 
-A production-grade, highly resilient backend foundation for the AI Personal Learning Assistant.
+**Scholarly AI Workspace (AILA)** is a premium, production-grade learning assistant designed for researchers, students, and lifelong learners. It transforms static study material into interactive, intelligence-driven learning paths.
 
-## Architecture
-- **Web App**: FastAPI natively tracing asynchronous context variables and outputting single-line JSON structured logs.
-- **Database**: PostgreSQL (SQLAlchemy Async), fully instrumented for sub-millisecond query latency breakdowns across universally inherited base repositories.
-- **Cache**: Redis, optimized with deterministic content hashing and mutual-exclusion distributed locks (`set nx=True`) completely isolating the application from devastating LLM cache stampedes.
-- **AI Core**: LLM providers enveloped by Tenacity exponentially backing off to intelligent `CircuitBreakers`, which fail-fast and degrade gracefully to safe string payloads upon total upstream outages. Dedicated Prompt Injection Filters and Regex PII detectors sanitize data bounds continuously.
+![AILA Dashboard](https://raw.githubusercontent.com/faraaz0786/Ai-Personal-Learning-Assistant-AILA-/main/docs/screenshots/dashboard.png)
 
-## Local Setup
-1. Copy `.env.example` to `.env`. Required overrides: `OPENAI_API_KEY` and `DATABASE_URL`.
-2. Instantiate isolated environments:
-   ```bash
-   make install
-   ```
-3. Boot resilient infrastructure:
-   ```bash
-   docker compose up -d postgres redis
-   ```
+## ✨ Key Features
+- **Intellectual Progress Tracking**: Real-time weighted scoring system (Coverage, Accuracy, Quiz performance).
+- **AI Mentor Insights**: Context-aware study tips based on your recent learning behavior.
+- **Dynamic Learning Library**: A persistent, searchable archive of all learned topics and summaries.
+- **AI Tutor Engine**: Natural language explanations and structured knowledge synthesis.
+- **SaaS-Grade UI**: A warm, scholarly aesthetic featuring Ivory/Burnt Orange accents and editorial typography.
 
-## Developer Commands
-A standardized `Makefile` completely manages continuous developer workflows:
-- `make dev`: Spin up the `uvicorn` instance locally trailing port `8000`.
-- `make test`: Executes all async API workflows and strictly verifies `app/prompts` Jinja2 LLM template regressions.
-- `make format`: Syntactically aligns spacing using Python `black` and `ruff`.
-- `make lint`: Traps anti-patterns checking against strict compliance rules via Ruff.
-- `make clean`: Sweeps ephemeral caches guaranteeing clean container builds.
+## 🛠 Tech Stack
+- **Frontend**: React, Vite, Zustand, React-Query, Vanilla CSS.
+- **Backend**: FastAPI (Python), SQLAlchemy, Pydantic.
+- **LLM**: Groq (Llama-3 architecture).
+- **Database**: Supabase (PostgreSQL).
+- **Deployment**: Vercel (Monorepo).
 
-## Key APIs & Metrics
-- `GET /metrics`: Direct insight scraping engine for Prometheus visualizing throughput, absolute Latency averages, and Generative Cache efficiencies (`ai_cache_hits`).
-- `GET /api/v1/health`: Readiness checks verifying Database and Redis availability.
+## 🚀 Quick Start
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/faraaz0786/Ai-Personal-Learning-Assistant-AILA-.git
+cd AI-Personal-Learning-Assistant
+```
+
+### 2. Environment Setup
+Create a `.env` file from the template:
+```bash
+cp .env.example .env
+```
+Fill in your `DATABASE_URL` and `GROQ_API_KEY`.
+
+### 3. Backend Setup
+```bash
+# Recommended: Create a virtual environment
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn backend.main:app --host 127.0.0.1 --port 8003
+```
+
+### 4. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 📂 Documentation
+- [System Architecture](docs/Architecture.md)
+- [API Documentation](docs/API.md)
+- [Deployment Guide](docs/Deployment.md)
+
+---
+Developed by **Faraaz** — [GitHub](https://github.com/faraaz0786)
