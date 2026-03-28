@@ -1,13 +1,21 @@
 from fastapi import APIRouter
 
-from api.v1.endpoints import health, insights, learn, library, progress, quizzes, sessions
+from api.v1.endpoints import (
+    health,
+    insights,
+    learn,
+    library,
+    progress,
+    quizzes,
+    sessions,
+)
 
+api_router = APIRouter()
 
-router = APIRouter()
-router.include_router(health.router, tags=["health"])
-router.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
-router.include_router(learn.router, prefix="/learn", tags=["learn"])
-router.include_router(quizzes.router, prefix="/quizzes", tags=["quizzes"])
-router.include_router(progress.router, prefix="/progress", tags=["progress"])
-router.include_router(library.router, prefix="/library", tags=["library"])
-router.include_router(insights.router, prefix="/insights", tags=["insights"])
+api_router.include_router(health.router, prefix="/health", tags=["health"])
+api_router.include_router(sessions.router, prefix="/sessions", tags=["sessions"])
+api_router.include_router(learn.router, prefix="/learn", tags=["learn"])
+api_router.include_router(quizzes.router, prefix="/quizzes", tags=["quizzes"])
+api_router.include_router(progress.router, prefix="/progress", tags=["progress"])
+api_router.include_router(library.router, prefix="/library", tags=["library"])
+api_router.include_router(insights.router, prefix="/insights", tags=["insights"])
