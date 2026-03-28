@@ -1,5 +1,5 @@
-from app.schemas.progress import ProgressRecommendation
-from app.services.ai.base_generator import BaseGenerator
+from api.schemas.progress import ProgressRecommendation
+from api.services.ai.base_generator import BaseGenerator
 from pydantic import BaseModel
 
 class RecommendationOutput(BaseModel):

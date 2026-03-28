@@ -2,7 +2,7 @@ from typing import Any
 
 from fastapi.responses import JSONResponse
 
-from app.core.logging import request_id_ctx_var
+from api.core.logging import request_id_ctx_var
 
 
 def serialize_exception(e: Exception) -> dict[str, str]:

@@ -5,13 +5,13 @@ from typing import Generic, TypeVar
 from pydantic import BaseModel
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
-from app.core.circuit_breaker import ai_circuit_breaker, CircuitBreakerOpenException
-from app.core.config import get_settings
-from app.core.timing import timing_tracker
-from app.providers.base import BaseLLMProvider
-from app.services.prompt_service import PromptService
-from app.services.response_parser import ResponseParser
-from app.core.exceptions import AppError
+from api.core.circuit_breaker import ai_circuit_breaker, CircuitBreakerOpenException
+from api.core.config import get_settings
+from api.core.timing import timing_tracker
+from api.providers.base import BaseLLMProvider
+from api.services.prompt_service import PromptService
+from api.services.response_parser import ResponseParser
+from api.core.exceptions import AppError
 
 
 SchemaT = TypeVar("SchemaT", bound=BaseModel)

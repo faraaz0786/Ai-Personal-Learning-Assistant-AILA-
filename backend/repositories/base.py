@@ -4,7 +4,7 @@ from typing import Generic, TypeVar
 from sqlalchemy import Select, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.timing import timing_tracker
+from api.core.timing import timing_tracker
 
 
 ModelT = TypeVar("ModelT")

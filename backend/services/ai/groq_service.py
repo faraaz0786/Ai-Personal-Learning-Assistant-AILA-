@@ -1,8 +1,8 @@
 import httpx
 import logging
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
-from app.core.exceptions import AppError
-from app.providers.base import BaseLLMProvider
+from api.core.exceptions import AppError
+from api.providers.base import BaseLLMProvider
 
 logger = logging.getLogger(__name__)
 

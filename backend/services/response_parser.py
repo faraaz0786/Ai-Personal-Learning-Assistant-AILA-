@@ -5,8 +5,8 @@ from typing import Any, TypeVar
 
 from pydantic import BaseModel, ValidationError
 
-from app.core.exceptions import AppError
-from app.core.security import sanitize_ai_payload
+from api.core.exceptions import AppError
+from api.core.security import sanitize_ai_payload
 
 
 logger = logging.getLogger(__name__)

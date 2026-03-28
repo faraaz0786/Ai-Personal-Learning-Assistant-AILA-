@@ -1,8 +1,8 @@
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core import redis as redis_client
-from app.schemas.common import HealthResponse
+from api.core import redis as redis_client
+from api.schemas.common import HealthResponse
 
 
 class HealthService:

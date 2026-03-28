@@ -1,7 +1,7 @@
 from uuid import uuid4
 
-from app.core.dependencies import get_progress_service, get_session_service
-from app.schemas.progress import ProgressHistoryItem, ProgressRecommendation, ProgressSummary
+from api.core.dependencies import get_progress_service, get_session_service
+from api.schemas.progress import ProgressHistoryItem, ProgressRecommendation, ProgressSummary
 
 
 class FakeSessionService:

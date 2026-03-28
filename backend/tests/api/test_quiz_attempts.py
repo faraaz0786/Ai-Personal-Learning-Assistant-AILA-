@@ -1,8 +1,8 @@
 from uuid import uuid4
 
-from app.core.dependencies import get_quiz_service, get_session_service
-from app.schemas.learn import QuizQuestion
-from app.schemas.quiz import QuizAttemptResponse, QuizDetailResponse
+from api.core.dependencies import get_quiz_service, get_session_service
+from api.schemas.learn import QuizQuestion
+from api.schemas.quiz import QuizAttemptResponse, QuizDetailResponse
 
 
 class FakeQuizService:

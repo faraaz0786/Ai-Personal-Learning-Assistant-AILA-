@@ -1,8 +1,8 @@
 import pytest
 
-from app.core.exceptions import AppError
-from app.schemas.learn import ExplanationOutput
-from app.services.response_parser import ResponseParser
+from api.core.exceptions import AppError
+from api.schemas.learn import ExplanationOutput
+from api.services.response_parser import ResponseParser
 
 
 def test_response_parser_accepts_valid_json_schema() -> None:

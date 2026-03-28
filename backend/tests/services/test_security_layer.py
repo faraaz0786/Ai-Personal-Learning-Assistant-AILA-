@@ -1,15 +1,15 @@
 import pytest
 
-from app.core.exceptions import AppError
-from app.core.security import (
+from api.core.exceptions import AppError
+from api.core.security import (
     Role,
     SecurityContext,
     contains_blocked_prompt_pattern,
     sanitize_ai_payload,
     sanitize_topic_input,
 )
-from app.services.response_parser import ResponseParser
-from app.schemas.learn import ExplanationOutput
+from api.services.response_parser import ResponseParser
+from api.schemas.learn import ExplanationOutput
 
 
 def test_topic_input_is_sanitized_and_normalized() -> None:

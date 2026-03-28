@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, Request
 
-from app.core.dependencies import get_progress_service, get_session_service
-from app.core.rbac import require_roles
-from app.core.security import Role
-from app.schemas.progress import DashboardSummary, ProgressHistoryItem, ProgressRecommendation, ProgressSummary
-from app.services.progress_service import ProgressService
-from app.services.session_service import SessionService
+from api.core.dependencies import get_progress_service, get_session_service
+from api.core.rbac import require_roles
+from api.core.security import Role
+from api.schemas.progress import DashboardSummary, ProgressHistoryItem, ProgressRecommendation, ProgressSummary
+from api.services.progress_service import ProgressService
+from api.services.session_service import SessionService
 
 
 router = APIRouter()

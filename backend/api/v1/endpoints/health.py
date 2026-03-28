@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from app.core.dependencies import get_health_service
-from app.schemas.common import HealthResponse
-from app.services.health_service import HealthService
+from api.core.dependencies import get_health_service
+from api.schemas.common import HealthResponse
+from api.services.health_service import HealthService
 
 
 router = APIRouter()

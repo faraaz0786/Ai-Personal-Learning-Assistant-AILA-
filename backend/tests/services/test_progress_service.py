@@ -4,7 +4,7 @@ from uuid import uuid4
 
 import pytest
 
-from app.services.progress_service import ProgressService
+from api.services.progress_service import ProgressService
 
 
 def _make_topic_model(normalized_topic="Photosynthesis"):

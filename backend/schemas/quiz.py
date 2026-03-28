@@ -3,9 +3,9 @@ from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field, StringConstraints, field_validator, model_validator
 
-from app.schemas.learn import QuizQuestion
-from app.schemas.progress import DashboardSummary
-from app.schemas.insight import QuizInsightSchema
+from api.schemas.learn import QuizQuestion
+from api.schemas.progress import DashboardSummary
+from api.schemas.insight import QuizInsightSchema
 
 
 class QuizDetailResponse(BaseModel):

@@ -7,9 +7,9 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import JSONResponse, Response
 
-from app.core.error_utils import safe_error_response
-from app.core.redis import get_client
-from app.core.exceptions import AppError
+from api.core.error_utils import safe_error_response
+from api.core.redis import get_client
+from api.core.exceptions import AppError
 
 logger = logging.getLogger(__name__)
 

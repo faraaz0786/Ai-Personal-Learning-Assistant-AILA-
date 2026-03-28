@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from app.schemas.learn import SummaryOutput
+from api.schemas.learn import SummaryOutput
 
 
 def test_summary_output_accepts_documented_word_range() -> None:

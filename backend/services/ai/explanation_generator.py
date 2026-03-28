@@ -1,5 +1,5 @@
-from app.schemas.learn import ExplanationOutput
-from app.services.ai.base_generator import BaseGenerator
+from api.schemas.learn import ExplanationOutput
+from api.services.ai.base_generator import BaseGenerator
 
 
 class ExplanationGenerator(BaseGenerator[ExplanationOutput]):

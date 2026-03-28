@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import health, insights, learn, library, progress, quizzes, sessions
+from api.v1.endpoints import health, insights, learn, library, progress, quizzes, sessions
 
 
 router = APIRouter()

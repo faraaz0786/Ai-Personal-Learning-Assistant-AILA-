@@ -1,13 +1,13 @@
 from uuid import UUID, uuid4
 
-from app.core.exceptions import AppError
-from app.repositories.quiz_repository import QuizRepository
-from app.repositories.quiz_attempt_repository import QuizAttemptRepository
-from app.repositories.topic_repository import TopicRepository
-from app.schemas.learn import QuizQuestion, QuizResponse
-from app.schemas.quiz import QuizAttemptResponse, QuizAttemptResult, QuizDetailResponse
-from app.services.progress_service import ProgressService
-from app.services.insight_service import InsightService
+from api.core.exceptions import AppError
+from api.repositories.quiz_repository import QuizRepository
+from api.repositories.quiz_attempt_repository import QuizAttemptRepository
+from api.repositories.topic_repository import TopicRepository
+from api.schemas.learn import QuizQuestion, QuizResponse
+from api.schemas.quiz import QuizAttemptResponse, QuizAttemptResult, QuizDetailResponse
+from api.services.progress_service import ProgressService
+from api.services.insight_service import InsightService
 
 
 class QuizService:

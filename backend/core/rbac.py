@@ -1,7 +1,7 @@
 from fastapi import Depends, Request
 
-from app.core.exceptions import AppError
-from app.core.security import Role, SecurityContext
+from api.core.exceptions import AppError
+from api.core.security import Role, SecurityContext
 
 
 import logging

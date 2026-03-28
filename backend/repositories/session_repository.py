@@ -3,8 +3,8 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import delete, desc, update
 
-from app.models.session import SessionModel
-from app.repositories.base import BaseRepository
+from api.models.session import SessionModel
+from api.repositories.base import BaseRepository
 
 
 class SessionRepository(BaseRepository[SessionModel]):

@@ -1,5 +1,5 @@
-from app.schemas.insight import QuizInsightSchema
-from app.services.ai.base_generator import BaseGenerator
+from api.schemas.insight import QuizInsightSchema
+from api.services.ai.base_generator import BaseGenerator
 
 
 class InsightGenerator(BaseGenerator[QuizInsightSchema]):

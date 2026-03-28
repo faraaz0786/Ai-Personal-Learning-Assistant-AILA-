@@ -1,8 +1,8 @@
 from uuid import UUID
-from app.repositories.topic_repository import TopicRepository
-from app.repositories.quiz_attempt_repository import QuizAttemptRepository
-from app.services.ai.mentor_tip_generator import MentorTipGenerator
-from app.schemas.insight import MentorTipSchema
+from api.repositories.topic_repository import TopicRepository
+from api.repositories.quiz_attempt_repository import QuizAttemptRepository
+from api.services.ai.mentor_tip_generator import MentorTipGenerator
+from api.schemas.insight import MentorTipSchema
 
 
 class InsightService:

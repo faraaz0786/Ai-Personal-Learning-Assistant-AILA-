@@ -4,35 +4,35 @@ from pathlib import Path
 from fastapi import Depends, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.config import Settings, get_settings
-from app.core.rbac import get_security_context
-from app.db.session import get_db_session
-from app.providers.anthropic_provider import AnthropicProvider
-from app.providers.base import BaseLLMProvider
-from app.providers.openai_provider import OpenAIProvider
-from app.repositories import (
+from api.core.config import Settings, get_settings
+from api.core.rbac import get_security_context
+from api.db.session import get_db_session
+from api.providers.anthropic_provider import AnthropicProvider
+from api.providers.base import BaseLLMProvider
+from api.providers.openai_provider import OpenAIProvider
+from api.repositories import (
     ExplanationRepository,
     QuizAttemptRepository,
     QuizRepository,
     SessionRepository,
     TopicRepository,
 )
-from app.services.ai.explanation_generator import ExplanationGenerator
-from app.services.ai.quiz_generator import QuizGenerator
-from app.services.ai.insight_generator import InsightGenerator
-from app.services.ai.mentor_tip_generator import MentorTipGenerator
-from app.services.ai.recommendation_generator import RecommendationGenerator
-from app.services.ai.summary_generator import SummaryGenerator
-from app.services.ai_service import AIService
-from app.services.insight_service import InsightService
-from app.services.library_service import LibraryService
-from app.services.cache.ai_cache_service import AICacheService
-from app.services.health_service import HealthService
-from app.services.prompt_service import PromptService
-from app.services.response_parser import ResponseParser
-from app.services.quiz_service import QuizService
-from app.services.progress_service import ProgressService
-from app.services.session_service import SessionService
+from api.services.ai.explanation_generator import ExplanationGenerator
+from api.services.ai.quiz_generator import QuizGenerator
+from api.services.ai.insight_generator import InsightGenerator
+from api.services.ai.mentor_tip_generator import MentorTipGenerator
+from api.services.ai.recommendation_generator import RecommendationGenerator
+from api.services.ai.summary_generator import SummaryGenerator
+from api.services.ai_service import AIService
+from api.services.insight_service import InsightService
+from api.services.library_service import LibraryService
+from api.services.cache.ai_cache_service import AICacheService
+from api.services.health_service import HealthService
+from api.services.prompt_service import PromptService
+from api.services.response_parser import ResponseParser
+from api.services.quiz_service import QuizService
+from api.services.progress_service import ProgressService
+from api.services.session_service import SessionService
 
 
 # ---------------------------------------------------------------------------
@@ -49,7 +49,7 @@ def get_response_parser() -> ResponseParser:
     return ResponseParser()
 
 
-from app.services.ai.groq_service import GroqService
+from api.services.ai.groq_service import GroqService
 
 def get_llm_provider(settings: Settings) -> BaseLLMProvider:
     if settings.llm_provider == "anthropic":

@@ -1,12 +1,12 @@
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
-from app.repositories.explanation_repository import ExplanationRepository
-from app.repositories.quiz_attempt_repository import QuizAttemptRepository
-from app.repositories.quiz_repository import QuizRepository
-from app.repositories.topic_repository import TopicRepository
-from app.schemas.progress import DashboardSummary, ProgressHistoryItem, ProgressRecommendation, ProgressSummary
-from app.services.ai.recommendation_generator import RecommendationGenerator
+from api.repositories.explanation_repository import ExplanationRepository
+from api.repositories.quiz_attempt_repository import QuizAttemptRepository
+from api.repositories.quiz_repository import QuizRepository
+from api.repositories.topic_repository import TopicRepository
+from api.schemas.progress import DashboardSummary, ProgressHistoryItem, ProgressRecommendation, ProgressSummary
+from api.services.ai.recommendation_generator import RecommendationGenerator
 
 
 class ProgressService:

@@ -3,8 +3,8 @@ from uuid import uuid4
 
 import pytest
 
-from app.core.exceptions import AppError
-from app.services.session_service import SessionService
+from api.core.exceptions import AppError
+from api.services.session_service import SessionService
 
 
 def _make_session_model(session_id=None):

@@ -1,4 +1,4 @@
-from app.services.prompt_service import PromptService
+from api.services.prompt_service import PromptService
 
 
 def test_explain_prompt_renders_correctly() -> None:

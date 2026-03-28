@@ -1,7 +1,7 @@
 import re
 import logging
 from typing import Any
-from app.core.exceptions import AppError
+from api.core.exceptions import AppError
 
 logger = logging.getLogger(__name__)
 

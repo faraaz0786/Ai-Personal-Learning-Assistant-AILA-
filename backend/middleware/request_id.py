@@ -5,9 +5,9 @@ from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 
-from app.core.error_utils import safe_error_response
-from app.core.logging import request_id_ctx_var
-from app.core.exceptions import AppError
+from api.core.error_utils import safe_error_response
+from api.core.logging import request_id_ctx_var
+from api.core.exceptions import AppError
 
 
 logger = logging.getLogger(__name__)

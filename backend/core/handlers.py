@@ -4,9 +4,9 @@ from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from app.core.error_utils import safe_error_response, serialize_exception
-from app.core.exceptions import AppError
-from app.core.metrics import metrics_tracker
+from api.core.error_utils import safe_error_response, serialize_exception
+from api.core.exceptions import AppError
+from api.core.metrics import metrics_tracker
 
 
 logger = logging.getLogger(__name__)

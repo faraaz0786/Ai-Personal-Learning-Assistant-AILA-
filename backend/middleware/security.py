@@ -4,8 +4,8 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 
-from app.core.error_utils import safe_error_response
-from app.core.exceptions import AppError
+from api.core.error_utils import safe_error_response
+from api.core.exceptions import AppError
 
 
 logger = logging.getLogger(__name__)

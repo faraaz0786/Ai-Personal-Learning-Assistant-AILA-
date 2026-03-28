@@ -3,9 +3,9 @@ from uuid import uuid4
 
 import pytest
 
-from app.core.exceptions import AppError
-from app.schemas.learn import QuizQuestion
-from app.services.quiz_service import QuizService
+from api.core.exceptions import AppError
+from api.schemas.learn import QuizQuestion
+from api.services.quiz_service import QuizService
 
 
 def _make_quiz_model(topic_id, questions, session_id):

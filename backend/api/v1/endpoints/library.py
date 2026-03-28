@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Request
-from app.core.dependencies import get_library_service, get_session_service
-from app.core.rbac import require_roles
-from app.core.security import Role
-from app.schemas.library import LibraryResponse
-from app.services.library_service import LibraryService
-from app.services.session_service import SessionService
+from api.core.dependencies import get_library_service, get_session_service
+from api.core.rbac import require_roles
+from api.core.security import Role
+from api.schemas.library import LibraryResponse
+from api.services.library_service import LibraryService
+from api.services.session_service import SessionService
 
 router = APIRouter()
 

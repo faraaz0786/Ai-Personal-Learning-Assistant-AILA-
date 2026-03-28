@@ -4,21 +4,21 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.config import get_settings
-from app.core.exceptions import AppError
-from app.core.handlers import (
+from api.core.config import get_settings
+from api.core.exceptions import AppError
+from api.core.handlers import (
     app_error_handler,
     unhandled_exception_handler,
     validation_error_handler,
 )
-from app.core.logging import configure_logging
-from app.core import redis as redis_client
-from app.core.metrics import metrics_tracker
-from app.middleware.logging_middleware import LoggingMiddleware
-from app.middleware.rate_limiter import RateLimiterMiddleware
-from app.middleware.request_id import RequestIdMiddleware
-from app.middleware.security import SecurityHeadersMiddleware
-from app.middleware.session import SessionContextMiddleware
+from api.core.logging import configure_logging
+from api.core import redis as redis_client
+from api.core.metrics import metrics_tracker
+from api.middleware.logging_middleware import LoggingMiddleware
+from api.middleware.rate_limiter import RateLimiterMiddleware
+from api.middleware.request_id import RequestIdMiddleware
+from api.middleware.security import SecurityHeadersMiddleware
+from api.middleware.session import SessionContextMiddleware
 
 
 @asynccontextmanager

@@ -1,5 +1,5 @@
-from app.schemas.insight import MentorTipSchema
-from app.services.ai.base_generator import BaseGenerator
+from api.schemas.insight import MentorTipSchema
+from api.services.ai.base_generator import BaseGenerator
 
 
 class MentorTipGenerator(BaseGenerator[MentorTipSchema]):

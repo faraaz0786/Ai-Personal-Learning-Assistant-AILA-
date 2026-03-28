@@ -4,8 +4,8 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import desc
 
-from app.models.quiz_attempt import QuizAttemptModel
-from app.repositories.base import BaseRepository
+from api.models.quiz_attempt import QuizAttemptModel
+from api.repositories.base import BaseRepository
 
 
 class QuizAttemptRepository(BaseRepository[QuizAttemptModel]):
@@ -64,8 +64,8 @@ class QuizAttemptRepository(BaseRepository[QuizAttemptModel]):
         self, session_id: UUID, limit: int = 100, offset: int = 0
     ) -> list[dict]:
         from sqlalchemy import select
-        from app.models.quiz import QuizModel
-        from app.models.topic import TopicModel
+        from api.models.quiz import QuizModel
+        from api.models.topic import TopicModel
         statement = (
             select(
                 QuizAttemptModel.percentage,
@@ -133,8 +133,8 @@ class QuizAttemptRepository(BaseRepository[QuizAttemptModel]):
     async def get_top_topics(self, session_id: UUID, limit: int = 5) -> list[dict]:
         """Returns top performing topics based on average quiz scores."""
         from sqlalchemy import select, func
-        from app.models.quiz import QuizModel
-        from app.models.topic import TopicModel
+        from api.models.quiz import QuizModel
+        from api.models.topic import TopicModel
         statement = (
             select(
                 TopicModel.normalized_topic.label('topic'),

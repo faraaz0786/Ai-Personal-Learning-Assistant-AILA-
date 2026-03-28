@@ -2,12 +2,12 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Request
 
-from app.core.dependencies import get_quiz_service, get_session_service
-from app.core.rbac import require_roles
-from app.core.security import Role
-from app.schemas.quiz import QuizAttemptRequest, QuizAttemptResponse, QuizDetailResponse
-from app.services.quiz_service import QuizService
-from app.services.session_service import SessionService
+from api.core.dependencies import get_quiz_service, get_session_service
+from api.core.rbac import require_roles
+from api.core.security import Role
+from api.schemas.quiz import QuizAttemptRequest, QuizAttemptResponse, QuizDetailResponse
+from api.services.quiz_service import QuizService
+from api.services.session_service import SessionService
 
 
 router = APIRouter()

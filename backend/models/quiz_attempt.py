@@ -2,7 +2,7 @@ from sqlalchemy import DateTime, ForeignKey, Integer, Numeric, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.models.base import Base
+from api.models.base import Base
 
 
 class QuizAttemptModel(Base):
