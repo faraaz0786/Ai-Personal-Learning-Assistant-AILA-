@@ -1,4 +1,4 @@
-import { apiClient } from "./client";
+import { apiFetch } from "../lib/api";
 import type {
   DashboardSummary,
   ProgressHistoryItem,
@@ -8,42 +8,56 @@ import type {
 
 export async function getProgressSummary() {
   try {
-    const response = await apiClient.get<ProgressSummary>("/progress/summary");
-    return response.data;
+    const response = await apiFetch("/progress/summary");
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+    return await response.json() as ProgressSummary;
   } catch (error: any) {
-    console.error("API ERROR (getProgressSummary):", error.response?.data || error.message);
+    console.error("API ERROR (getProgressSummary):", error.message);
     throw error;
   }
 }
 
 export async function getDashboardSummary() {
   try {
-    const response = await apiClient.get<DashboardSummary>("/progress/dashboard");
-    return response.data;
+    const response = await apiFetch("/progress/dashboard");
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+    return await response.json() as DashboardSummary;
   } catch (error: any) {
-    console.error("API ERROR (getDashboardSummary):", error.response?.data || error.message);
+    console.error("API ERROR (getDashboardSummary):", error.message);
     throw error;
   }
 }
 
 export async function getProgressHistory() {
   try {
-    const response = await apiClient.get<ProgressHistoryItem[]>("/progress/history");
-    return response.data;
+    const response = await apiFetch("/progress/history");
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+    return await response.json() as ProgressHistoryItem[];
   } catch (error: any) {
-    console.error("API ERROR (getProgressHistory):", error.response?.data || error.message);
+    console.error("API ERROR (getProgressHistory):", error.message);
     throw error;
   }
 }
 
 export async function getProgressRecommendations() {
   try {
-    const response = await apiClient.get<ProgressRecommendation[]>(
-      "/progress/recommendations"
-    );
-    return response.data;
+    const response = await apiFetch("/progress/recommendations");
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+    return await response.json() as ProgressRecommendation[];
   } catch (error: any) {
-    console.error("API ERROR (getProgressRecommendations):", error.response?.data || error.message);
+    console.error("API ERROR (getProgressRecommendations):", error.message);
     throw error;
   }
 }

@@ -1,4 +1,4 @@
-import { apiClient } from "./client";
+import { apiFetch } from "../lib/api";
 
 export type MentorTip = {
   tip: string;
@@ -8,10 +8,14 @@ export type MentorTip = {
 
 export async function getMentorTip() {
   try {
-    const response = await apiClient.get<MentorTip>("/insights/mentor-tip");
-    return response.data;
+    const response = await apiFetch("/insights/mentor-tip");
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+    return await response.json() as MentorTip;
   } catch (error: any) {
-    console.error("API ERROR (getMentorTip):", error.response?.data || error.message);
+    console.error("API ERROR (getMentorTip):", error.message);
     throw error;
   }
 }
