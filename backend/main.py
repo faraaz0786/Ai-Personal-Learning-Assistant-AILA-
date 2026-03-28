@@ -1,6 +1,7 @@
 from app.api.router import api_router
-from app.core.app import create_app
 
+from fastapi import FastAPI
 
-app = create_app()
-app.include_router(api_router)
+app = FastAPI()
+
+app.include_router(api_router, prefix="/api/v1")
