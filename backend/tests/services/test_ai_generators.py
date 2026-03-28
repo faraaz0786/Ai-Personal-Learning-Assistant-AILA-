@@ -1,12 +1,12 @@
 import pytest
 
-from api.core.config import Settings
-from api.schemas.learn import ExplanationOutput, QuizGenerationOutput, SummaryOutput
-from api.services.ai.explanation_generator import ExplanationGenerator
-from api.services.ai.quiz_generator import QuizGenerator
-from api.services.ai.summary_generator import SummaryGenerator
-from api.services.prompt_service import PromptService
-from api.services.response_parser import ResponseParser
+from core.config import Settings
+from schemas.learn import ExplanationOutput, QuizGenerationOutput, SummaryOutput
+from services.ai.explanation_generator import ExplanationGenerator
+from services.ai.quiz_generator import QuizGenerator
+from services.ai.summary_generator import SummaryGenerator
+from services.prompt_service import PromptService
+from services.response_parser import ResponseParser
 
 
 class StubProvider:

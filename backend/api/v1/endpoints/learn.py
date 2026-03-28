@@ -1,18 +1,18 @@
 import logging
 from fastapi import APIRouter, Depends, Request
 
-from api.core.dependencies import get_ai_service, get_session_service
-from api.core.rbac import require_roles
-from api.core.security import Role
-from api.schemas.learn import (
+from core.dependencies import get_ai_service, get_session_service
+from core.rbac import require_roles
+from core.security import Role
+from schemas.learn import (
     ExplainRequest,
     ExplainResponse,
     QuizRequest,
     QuizResponse,
     TopicResponse,
 )
-from api.services.ai_service import AIService
-from api.services.session_service import SessionService
+from services.ai_service import AIService
+from services.session_service import SessionService
 
 
 logger = logging.getLogger(__name__)

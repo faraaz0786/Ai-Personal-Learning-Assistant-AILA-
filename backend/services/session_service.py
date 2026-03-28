@@ -2,9 +2,9 @@ from datetime import datetime, timezone
 import logging
 from uuid import UUID
 
-from api.core.exceptions import AppError
-from api.repositories.session_repository import SessionRepository
-from api.schemas.session import SessionResponse
+from core.exceptions import AppError
+from repositories.session_repository import SessionRepository
+from schemas.session import SessionResponse
 
 
 logger = logging.getLogger(__name__)

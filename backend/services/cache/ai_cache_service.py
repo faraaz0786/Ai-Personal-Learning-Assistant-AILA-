@@ -6,8 +6,8 @@ import logging
 
 import redis.asyncio as redis
 
-from api.core.redis import get_client
-from api.core.timing import timing_tracker
+from core.redis import get_client
+from core.timing import timing_tracker
 
 logger = logging.getLogger(__name__)
 

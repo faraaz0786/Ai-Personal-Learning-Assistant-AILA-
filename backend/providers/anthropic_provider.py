@@ -1,7 +1,7 @@
 import httpx
 
-from api.core.exceptions import AppError
-from api.providers.base import BaseLLMProvider
+from core.exceptions import AppError
+from providers.base import BaseLLMProvider
 
 
 class AnthropicProvider(BaseLLMProvider):

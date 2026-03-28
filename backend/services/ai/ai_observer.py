@@ -1,5 +1,5 @@
 import logging
-from api.core.metrics import metrics_tracker
+from core.metrics import metrics_tracker
 
 logger = logging.getLogger(__name__)
 

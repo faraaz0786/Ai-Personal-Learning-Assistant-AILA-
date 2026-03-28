@@ -1,5 +1,5 @@
-from api.schemas.learn import SummaryOutput
-from api.services.ai.base_generator import BaseGenerator
+from schemas.learn import SummaryOutput
+from services.ai.base_generator import BaseGenerator
 
 
 class SummaryGenerator(BaseGenerator[SummaryOutput]):

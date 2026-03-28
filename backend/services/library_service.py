@@ -1,7 +1,7 @@
 from uuid import UUID
-from api.repositories.topic_repository import TopicRepository
-from api.repositories.explanation_repository import ExplanationRepository
-from api.schemas.library import LibraryItem, LibraryResponse
+from repositories.topic_repository import TopicRepository
+from repositories.explanation_repository import ExplanationRepository
+from schemas.library import LibraryItem, LibraryResponse
 
 
 class LibraryService:

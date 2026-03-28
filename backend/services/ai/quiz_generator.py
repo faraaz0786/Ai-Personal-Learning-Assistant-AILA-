@@ -1,5 +1,5 @@
-from api.schemas.learn import QuizGenerationOutput
-from api.services.ai.base_generator import BaseGenerator
+from schemas.learn import QuizGenerationOutput
+from services.ai.base_generator import BaseGenerator
 
 
 class QuizGenerator(BaseGenerator[QuizGenerationOutput]):

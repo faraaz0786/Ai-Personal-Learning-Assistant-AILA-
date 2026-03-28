@@ -2,7 +2,7 @@ from sqlalchemy import DateTime, JSON, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
-from api.models.base import Base
+from models.base import Base
 
 
 class SessionModel(Base):

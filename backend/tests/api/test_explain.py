@@ -1,7 +1,7 @@
 from uuid import uuid4
 
-from api.core.dependencies import get_ai_service, get_session_service
-from api.schemas.learn import ExplainRequest, ExplainResponse
+from core.dependencies import get_ai_service, get_session_service
+from schemas.learn import ExplainRequest, ExplainResponse
 
 
 class FakeAIService:

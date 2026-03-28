@@ -3,8 +3,8 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import desc
 
-from api.models.quiz import QuizModel
-from api.repositories.base import BaseRepository
+from models.quiz import QuizModel
+from repositories.base import BaseRepository
 
 
 class QuizRepository(BaseRepository[QuizModel]):
@@ -38,7 +38,7 @@ class QuizRepository(BaseRepository[QuizModel]):
         return await self.execute_all(statement)
 
     async def list_by_session_id(self, session_id: UUID) -> Sequence[QuizModel]:
-        from api.models.topic import TopicModel
+        from models.topic import TopicModel
 
         statement = (
             self.select_model(QuizModel)

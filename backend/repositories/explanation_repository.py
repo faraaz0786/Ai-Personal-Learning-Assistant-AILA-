@@ -2,8 +2,8 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import delete
 
-from api.models.explanation import ExplanationModel
-from api.repositories.base import BaseRepository
+from models.explanation import ExplanationModel
+from repositories.base import BaseRepository
 
 
 class ExplanationRepository(BaseRepository[ExplanationModel]):

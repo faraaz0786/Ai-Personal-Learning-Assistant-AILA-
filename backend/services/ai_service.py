@@ -5,11 +5,11 @@ from datetime import datetime, timezone
 from time import perf_counter
 from uuid import UUID, uuid4
 
-from api.core.config import get_settings
-from api.core.exceptions import AppError, LearnError
-from api.repositories.explanation_repository import ExplanationRepository
-from api.repositories.topic_repository import TopicRepository
-from api.schemas.learn import (
+from core.config import get_settings
+from core.exceptions import AppError, LearnError
+from repositories.explanation_repository import ExplanationRepository
+from repositories.topic_repository import TopicRepository
+from schemas.learn import (
     ExplainRequest,
     ExplainResponse,
     ExplanationOutput,
@@ -17,14 +17,14 @@ from api.schemas.learn import (
     QuizResponse,
     TopicResponse,
 )
-from api.services.ai.explanation_generator import ExplanationGenerator
-from api.services.ai.quiz_generator import QuizGenerator
-from api.services.ai.summary_generator import SummaryGenerator
-from api.services.ai.ai_observer import ai_observer
-from api.services.cache.ai_cache_service import AICacheService, generate_cache_key, get_ttl
-from api.services.quiz_service import QuizService
-from api.services.session_service import SessionService
-from api.utils.security_filter import security_filter
+from services.ai.explanation_generator import ExplanationGenerator
+from services.ai.quiz_generator import QuizGenerator
+from services.ai.summary_generator import SummaryGenerator
+from services.ai.ai_observer import ai_observer
+from services.cache.ai_cache_service import AICacheService, generate_cache_key, get_ttl
+from services.quiz_service import QuizService
+from services.session_service import SessionService
+from utils.security_filter import security_filter
 
 
 logger = logging.getLogger(__name__)
@@ -116,7 +116,7 @@ class AIService:
             llm_model=settings.llm_model_primary,
         )
 
-        from api.schemas.learn import QuizGenerationOutput
+        from schemas.learn import QuizGenerationOutput
         quiz_output = QuizGenerationOutput(**cached)
         
         return await self.quiz_service.create_quiz(

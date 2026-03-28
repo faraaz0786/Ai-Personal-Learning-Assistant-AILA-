@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 
 from pydantic import BaseModel, Field, StringConstraints, field_validator, model_validator
 
-from api.utils.security_filter import security_filter
+from utils.security_filter import security_filter
 
 
 ALLOWED_SUBJECTS = {

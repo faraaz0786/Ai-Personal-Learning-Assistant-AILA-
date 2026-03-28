@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Request
-from api.core.dependencies import get_insight_service, get_session_service
-from api.core.rbac import require_roles
-from api.core.security import Role
-from api.schemas.insight import MentorTipSchema
-from api.services.insight_service import InsightService
-from api.services.session_service import SessionService
+from core.dependencies import get_insight_service, get_session_service
+from core.rbac import require_roles
+from core.security import Role
+from schemas.insight import MentorTipSchema
+from services.insight_service import InsightService
+from services.session_service import SessionService
 
 router = APIRouter()
 

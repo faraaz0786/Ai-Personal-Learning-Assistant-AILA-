@@ -3,16 +3,16 @@ from uuid import uuid4
 
 import pytest
 
-from api.schemas.learn import ExplainRequest
-from api.services.ai.explanation_generator import ExplanationGenerator
-from api.services.ai.quiz_generator import QuizGenerator
-from api.services.ai.summary_generator import SummaryGenerator
-from api.services.ai_service import AIService
-from api.services.cache.ai_cache_service import AICacheService
-from api.services.prompt_service import PromptService
-from api.services.quiz_service import QuizService
-from api.services.response_parser import ResponseParser
-from api.services.session_service import SessionService
+from schemas.learn import ExplainRequest
+from services.ai.explanation_generator import ExplanationGenerator
+from services.ai.quiz_generator import QuizGenerator
+from services.ai.summary_generator import SummaryGenerator
+from services.ai_service import AIService
+from services.cache.ai_cache_service import AICacheService
+from services.prompt_service import PromptService
+from services.quiz_service import QuizService
+from services.response_parser import ResponseParser
+from services.session_service import SessionService
 
 
 class StubProvider:

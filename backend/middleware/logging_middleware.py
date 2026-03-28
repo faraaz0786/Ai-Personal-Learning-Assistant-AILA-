@@ -5,10 +5,10 @@ from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 
-from api.core.error_utils import safe_error_response
-from api.core.metrics import metrics_tracker
-from api.core.timing import timing_metrics
-from api.core.exceptions import AppError
+from core.error_utils import safe_error_response
+from core.metrics import metrics_tracker
+from core.timing import timing_metrics
+from core.exceptions import AppError
 
 
 logger = logging.getLogger(__name__)

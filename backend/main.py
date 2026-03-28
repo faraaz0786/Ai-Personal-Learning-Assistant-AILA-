@@ -1,5 +1,5 @@
 from api.v1.router import api_router
-from api.core.app import create_app
+from core.app import create_app
 
 
 app = create_app()

@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
-from api.models.base import Base
+from models.base import Base
 
 
 class TopicModel(Base):

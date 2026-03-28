@@ -2,11 +2,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Request, Response, status
 
-from api.core.dependencies import get_session_service
-from api.core.rbac import require_roles
-from api.core.security import Role
-from api.schemas.session import SessionResponse
-from api.services.session_service import SessionService
+from core.dependencies import get_session_service
+from core.rbac import require_roles
+from core.security import Role
+from schemas.session import SessionResponse
+from services.session_service import SessionService
 
 
 router = APIRouter()

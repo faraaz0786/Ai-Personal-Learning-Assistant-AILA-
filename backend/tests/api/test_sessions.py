@@ -1,4 +1,4 @@
-from api.core.dependencies import get_session_service
+from core.dependencies import get_session_service
 
 
 class FakeSessionService:
@@ -6,7 +6,7 @@ class FakeSessionService:
         self.created = None
 
     async def create_session(self):
-        from api.schemas.session import SessionResponse
+        from schemas.session import SessionResponse
 
         self.created = SessionResponse.placeholder()
         return self.created

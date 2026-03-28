@@ -3,8 +3,8 @@ from uuid import UUID, uuid4
 
 from sqlalchemy import desc
 
-from api.models.topic import TopicModel
-from api.repositories.base import BaseRepository
+from models.topic import TopicModel
+from repositories.base import BaseRepository
 
 
 class TopicRepository(BaseRepository[TopicModel]):
@@ -47,7 +47,7 @@ class TopicRepository(BaseRepository[TopicModel]):
 
     async def count_by_session_id(self, session_id: UUID) -> int:
         from sqlalchemy import select, func
-        from api.core.timing import timing_tracker
+        from core.timing import timing_tracker
         
         statement = select(func.count(TopicModel.id)).where(TopicModel.session_id == session_id)
         with timing_tracker.measure("db"):
