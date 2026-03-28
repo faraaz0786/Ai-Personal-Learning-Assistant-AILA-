@@ -5,14 +5,9 @@ app = FastAPI()
 
 from fastapi.middleware.cors import CORSMiddleware
 
-origins = [
-    "https://ai-personal-learning-assistant-aila.vercel.app",
-    # "http://localhost:5173",
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,   # ❗ NOT "*"
+    allow_origins=["https://ai-personal-learning-assistant-aila.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

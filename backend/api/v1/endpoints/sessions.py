@@ -12,7 +12,7 @@ from services.session_service import SessionService
 router = APIRouter()
 
 
-@router.post("", response_model=SessionResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/")
 async def create_session(
     response: Response,
     _: object = Depends(require_roles(Role.ANONYMOUS)),
