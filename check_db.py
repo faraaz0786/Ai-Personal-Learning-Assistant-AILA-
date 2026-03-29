@@ -19,7 +19,9 @@ async def main():
                 WHERE table_schema = 'public'
             """))
             tables = [row[0] for row in result]
-            print(f"✅ Found {len(tables)} tables: {', '.join(tables)}")
+            print(f"✅ Found {len(tables)} tables:")
+            for table in tables:
+                print(f"  - {table}")
             
             # Check if sessions exists
             if 'sessions' in tables:

@@ -107,4 +107,8 @@ class SessionService:
             )
 
         return active_session_id
+
+    async def ensure_session(self, session_id: str | None) -> UUID:
+        """Alias for require_session used by AI services."""
+        return await self.require_session(session_id)
         

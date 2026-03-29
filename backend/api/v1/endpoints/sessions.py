@@ -19,18 +19,21 @@ async def create_session(
     session_service: SessionService = Depends(get_session_service),
 ) -> SessionResponse:
     try:
+        from core.config import get_settings
+        settings = get_settings()
+        
+        is_prod = settings.environment == "production"
+        
         print("🚀 Creating session...")
-
         session = await session_service.generate_new_session()
-
         print("✅ Session created:", session)
 
         response.set_cookie(
             key="aila_session",
             value=str(session.session_id),
             httponly=True,
-            secure=True,        # required for HTTPS (Render + Vercel)
-            samesite="none",    # required for cross-origin
+            secure=is_prod,     # Only Secure in production (HTTPS)
+            samesite="none" if is_prod else "lax", 
             path="/",
         )
 

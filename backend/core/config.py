@@ -64,6 +64,12 @@ class Settings(BaseSettings):
     def validate_database_url(cls, value: str) -> str:
         if "[YOUR-PASSWORD]" in value:
             return value
+        
+        # 🔥 Mandatory for Supabase transaction mode pooler (port 6543)
+        if ":6543" in value and "prepared_statement_cache_size=0" not in value:
+            separator = "&" if "?" in value else "?"
+            return f"{value}{separator}prepared_statement_cache_size=0"
+            
         return value
 
     @model_validator(mode="after")

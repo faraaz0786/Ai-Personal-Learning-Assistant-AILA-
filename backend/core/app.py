@@ -34,6 +34,9 @@ async def lifespan(app: FastAPI):
     from models.topic import TopicModel
     
     try:
+        from utils.db_check_startup import check_db_connectivity
+        await check_db_connectivity()
+        
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
         print("✅ Database tables verified/created.")
