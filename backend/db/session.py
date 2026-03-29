@@ -10,7 +10,13 @@ engine = create_async_engine(
     settings.database_url, 
     pool_pre_ping=True, 
     pool_recycle=3600,
-    future=True
+    future=True,
+    connect_args={
+        "command_timeout": 10,
+        "server_settings": {
+            "application_name": "AILA-Backend"
+        }
+    }
 )
 AsyncSessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
 
