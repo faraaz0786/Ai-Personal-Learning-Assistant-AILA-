@@ -1,4 +1,5 @@
-export const BASE_URL = import.meta.env.VITE_API_URL!.replace(/\/$/, "");
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000/api/v1";
+export const BASE_URL = rawApiUrl.replace(/\/$/, "");
 
 export const apiFetch = async (endpoint: string, options?: RequestInit) => {
   // Ensure we don't have double slashes and endpoint is clean
