@@ -1,40 +1,54 @@
 import asyncio
 import socket
+import logging
 from sqlalchemy.ext.asyncio import create_async_engine
 from core.config import get_settings
 
-async def check_db_connectivity():
+logger = logging.getLogger(__name__)
+
+async def check_db_connectivity() -> bool:
     settings = get_settings()
     db_url = settings.database_url
     
-    print(f"\n--- 🔍 Production DB Health Check ---")
-    print(f"Target: {db_url.split('@')[-1]}")
+    # Mask password for logs
+    masked_url = db_url.split('@')[-1]
+    logger.info(f"🔍 Starting Production DB Health Check on: {masked_url}")
     
-    # 1. Test DNS Resolution
+    # 1. Test DNS Resolution (Prefer IPv4)
+    hostname = db_url.split('@')[-1].split(':')[0]
     try:
-        hostname = db_url.split('@')[-1].split(':')[0]
-        print(f"🌐 Resolving hostname: {hostname}")
-        addrs = socket.getaddrinfo(hostname, None)
+        logger.info(f"🌐 Resolving hostname: {hostname}")
+        # AF_INET forces IPv4
+        addrs = socket.getaddrinfo(hostname, None, family=socket.AF_INET)
         for addr in addrs:
-            print(f"📍 Resolved IP: {addr[4][0]} (Family: {addr[0]})")
+            logger.info(f"📍 Resolved IPv4: {addr[4][0]}")
     except Exception as e:
-        print(f"❌ DNS Resolution Failed: {str(e)}")
+        logger.error(f"❌ DNS Resolution Failed for {hostname}: {str(e)}")
+        # Check if it resolves at all (might be IPv6 only?)
+        try:
+            any_addrs = socket.getaddrinfo(hostname, None)
+            for addr in any_addrs:
+                logger.warning(f"⚠️ Found non-IPv4 address: {addr[4][0]} (Family: {addr[0]})")
+        except:
+            pass
+        return False
 
     # 2. Test Engine Connection
     try:
+        # We create a temporary engine just for the check
         engine = create_async_engine(db_url)
         async with engine.connect() as conn:
             await conn.execute("SELECT 1")
-        print("✅ Database connection successful!")
+        await engine.dispose()
+        logger.info("✅ Database connection successful!")
+        return True
     except Exception as e:
-        print(f"❌ Database connection failed!")
-        print(f"📝 Error Details: {str(e)}")
-        if "Network is unreachable" in str(e):
-            print("💡 PRO TIP: This is often an IPv6 vs IPv4 mismatch on Render. "
-                  "Ensure you are using the Supabase Connection Pooler (port 6543) "
-                  "and check if Render supports IPv6 for your region.")
-    
-    print(f"-----------------------------------\n")
+        logger.error(f"❌ Database connection failed: {str(e)}")
+        if "Network is unreachable" in str(e) or "ETIMEDOUT" in str(e):
+            logger.error("💡 CAUSE: This is a network routing issue. Render likely cannot reach the Supabase IP via its current egress.")
+        return False
 
 if __name__ == "__main__":
+    # For local manual testing
+    logging.basicConfig(level=logging.INFO)
     asyncio.run(check_db_connectivity())

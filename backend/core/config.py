@@ -101,4 +101,11 @@ def get_settings() -> Settings:
             for origin in settings.cors_origins.split(",")
             if origin.strip()
         ]
+        
+    # 🔍 Log masked DB URL for production debugging
+    import logging
+    logger = logging.getLogger("core.config")
+    masked_url = settings.database_url.split("@")[-1]
+    logger.info(f"⚙️ Configuration loaded. Database Host: {masked_url}")
+    
     return settings
