@@ -4,6 +4,10 @@ from typing import Literal
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+import os
+import sys
+
+print(f"📁 Loading configuration from {os.path.abspath(__file__)}", flush=True)
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
@@ -94,11 +98,18 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    settings = Settings()
-    if isinstance(settings.cors_origins, str):
-        settings.cors_origins = [
-            origin.strip()
-            for origin in settings.cors_origins.split(",")
-            if origin.strip()
-        ]
-    return settings
+    try:
+        settings = Settings()
+        if isinstance(settings.cors_origins, str):
+            settings.cors_origins = [
+                origin.strip()
+                for origin in settings.cors_origins.split(",")
+                if origin.strip()
+            ]
+        return settings
+    except Exception as e:
+        print("❌ CONFIGURATION ERROR: Pydantic Validation failed!", file=sys.stderr)
+        print(f"Details: {str(e)}", file=sys.stderr)
+        sys.stderr.flush()
+        sys.stdout.flush()
+        raise

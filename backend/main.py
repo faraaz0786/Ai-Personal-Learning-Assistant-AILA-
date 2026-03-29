@@ -1,6 +1,8 @@
 import sys
 import traceback
 
+print("🚀 AILA Backend: Starting main.py initialization...", flush=True)
+
 try:
     from core.app import create_app
     from api.v1.router import api_router
