@@ -29,11 +29,15 @@ async def connect() -> None:
         logger.info("Redis connected at %s", settings.redis_url)
     except Exception as exc:
         if settings.environment == "development":
-            import fakeredis
-            logger.warning("Redis unavailable: %s — falling back to FakeAsyncRedis for development", exc)
-            _client = fakeredis.FakeAsyncRedis(decode_responses=True)
+            try:
+                import fakeredis
+                logger.warning("Redis unavailable: %s — falling back to FakeAsyncRedis", exc)
+                _client = fakeredis.FakeAsyncRedis(decode_responses=True)
+            except ImportError:
+                logger.error("Redis unavailable and fakeredis not installed. Rate limiting and caching will be disabled.")
+                _client = None
         else:
-            logger.error("Redis unreachable in %s mode: %s", settings.environment, exc)
+            logger.error("Redis unreachable in %s mode: %s. Functionality disabled.", settings.environment, exc)
             _client = None
 
 
