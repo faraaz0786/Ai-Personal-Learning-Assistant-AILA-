@@ -13,22 +13,39 @@ logger = logging.getLogger(__name__)
 class SessionContextMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
         try:
-            # Attach session + security context
-            request.state.session_id = request.cookies.get("aila_session")
+            # 🔍 DEBUG: Log incoming request
+            print(f"\n🚀 Incoming Request: {request.method} {request.url}")
+
+            # 🔍 DEBUG: Log cookies received
+            print("🍪 Incoming Cookies:", request.cookies)
+
+            # Extract session
+            session_id = request.cookies.get("aila_session")
+
+            # 🔍 DEBUG: Log session ID
+            print("🆔 Extracted Session ID:", session_id)
+
+            # Attach to request state
+            request.state.session_id = session_id
             request.state.security_context = SecurityContext(
-                session_id=request.state.session_id
+                session_id=session_id
             )
 
-            return await call_next(request)
+            response = await call_next(request)
 
-        except AppError:
-            # Let FastAPI handle properly
+            # 🔍 DEBUG: Log response status
+            print(f"✅ Response Status: {response.status_code}\n")
+
+            return response
+
+        except AppError as e:
+            # ✅ Proper app-level error logging
+            print("⚠️ AppError Triggered:", e.code, e.message)
+            logger.warning("AppError in middleware", exc_info=True)
             raise
 
         except Exception as e:
-            # 🔥 CRITICAL: DO NOT HIDE ERROR
+            # 🔥 CRITICAL: FULL TRACE VISIBILITY
             print("🔥 MIDDLEWARE CRASH:", str(e))
             logger.error("Middleware crash", exc_info=True)
-
-            raise e  # ❗ MUST raise, not return response
-            
+            raise  # ❗ DO NOT SWALLOW

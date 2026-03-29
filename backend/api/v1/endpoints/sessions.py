@@ -30,7 +30,7 @@ async def create_session(
             value=str(session.session_id),
             httponly=True,
             secure=True,        # required for HTTPS (Render + Vercel)
-            samesite="none",    # required for cross-origin
+            samesite="lax",    # required for cross-origin
         )
 
         return session
