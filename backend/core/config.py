@@ -32,7 +32,7 @@ class Settings(BaseSettings):
 
     # Supabase PostgreSQL via Supavisor connection pooler
     database_url: str = Field(
-        default="postgresql+asyncpg://postgres.eapmxlzuszoknkkoegmc:[YOUR-PASSWORD]@aws-0-ap-south-1.pooler.supabase.com:6543/postgres",
+        default="postgresql+asyncpg://postgres:[YOUR-PASSWORD]@db.eapmxlzuszoknkkoegmc.supabase.co:5432/postgres",
         alias="DATABASE_URL",
     )
 
@@ -66,15 +66,10 @@ class Settings(BaseSettings):
     @field_validator("database_url", mode="after")
     @classmethod
     def validate_database_url(cls, v: str) -> str:
-        # Mandatory for Supabase transaction mode pooler (port 6543)
-        if ":6543" in v:
-            if "prepared_statement_cache_size=0" not in v:
-                separator = "&" if "?" in v else "?"
-                v = f"{v}{separator}prepared_statement_cache_size=0"
-            # ENFORCE SSL for pooler
-            if "ssl" not in v:
-                separator = "&" if "?" in v else "?"
-                v = f"{v}{separator}ssl=require"
+        # Supabase Direct connectivity (port 5432) requires explicit SSL
+        if "ssl" not in v:
+            separator = "&" if "?" in v else "?"
+            v = f"{v}{separator}ssl=require"
         return v
 
     @model_validator(mode="after")
