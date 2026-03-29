@@ -12,23 +12,32 @@ from services.session_service import SessionService
 router = APIRouter()
 
 
-@router.post("/")
+@router.post("/", response_model=SessionResponse, status_code=status.HTTP_201_CREATED)
 async def create_session(
     response: Response,
     _: object = Depends(require_roles(Role.ANONYMOUS)),
     session_service: SessionService = Depends(get_session_service),
 ) -> SessionResponse:
-    session = await session_service.generate_new_session()
-    response.set_cookie(
-        key="aila_session",
-        value=str(session.session_id),
-        httponly=True,
-        secure=True,        # REQUIRED for production
-        samesite="none"     # REQUIRED for cross-origin
-    )
+    try:
+        print("🚀 Creating session...")
 
-    return session
+        session = await session_service.generate_new_session()
 
+        print("✅ Session created:", session)
+
+        response.set_cookie(
+            key="aila_session",
+            value=str(session.session_id),
+            httponly=True,
+            secure=True,        # required for HTTPS (Render + Vercel)
+            samesite="none",    # required for cross-origin
+        )
+
+        return session
+
+    except Exception as e:
+        print("🔥 SESSION ERROR:", str(e))
+        raise e
 
 @router.get("/{session_id}", response_model=SessionResponse)
 async def get_session(
