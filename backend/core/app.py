@@ -12,10 +12,8 @@ from core.handlers import (
     validation_error_handler,
 )
 from core.logging import configure_logging
-from core import redis as redis_client
 from core.metrics import metrics_tracker
 from middleware.logging_middleware import LoggingMiddleware
-from middleware.rate_limiter import RateLimiterMiddleware
 from middleware.request_id import RequestIdMiddleware
 from middleware.security import SecurityHeadersMiddleware
 from middleware.session import SessionContextMiddleware
@@ -24,9 +22,7 @@ from middleware.session import SessionContextMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle events."""
-    await redis_client.connect()
     yield
-    await redis_client.close()
 
 
 def create_app() -> FastAPI:
@@ -44,7 +40,6 @@ def create_app() -> FastAPI:
 
     # Note: Middlewares are executed roughly physically bottom-to-top 
     # for the request phase, so RequestId is the outermost (earliest).
-    app.add_middleware(RateLimiterMiddleware)
     app.add_middleware(SessionContextMiddleware)
     app.add_middleware(SecurityHeadersMiddleware)
     
