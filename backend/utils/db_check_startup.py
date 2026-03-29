@@ -10,7 +10,16 @@ async def check_db_connectivity() -> bool:
     settings = get_settings()
     db_url = settings.database_url
     
-    # Mask password for logs
+    # Mask password for logs but verify structure
+    try:
+        user_part = db_url.split('://')[-1].split('@')[0]
+        username = user_part.split(':')[0]
+        logger.info(f"👤 Username Check: structure={'[user].[project]' if '.' in username else 'simple'}, length={len(username)}")
+        if '.' not in username:
+            logger.warning("⚠️ WARNING: Username does NOT contain a dot. Supabase Pooler (port 6543) REQUIRES 'username.project-ref' format.")
+    except Exception as e:
+        logger.error(f"Failed to parse username for diagnostics: {e}")
+
     masked_url = db_url.split('@')[-1]
     logger.info(f"🔍 Starting Production DB Health Check on: {masked_url}")
     
