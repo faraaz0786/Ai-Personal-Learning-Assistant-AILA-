@@ -63,6 +63,15 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # 🔍 Safe Log masked DB URL for production debugging
+    import logging
+    logger = logging.getLogger("core.app")
+    try:
+        masked_host = settings.database_url.split("@")[-1].split("?")[0]
+        logger.info(f"⚙️ App Initialized. Database Host: {masked_host}")
+    except:
+        logger.warning("⚙️ App Initialized. Could not parse database host for logging.")
+
     # Note: Middlewares are executed roughly physically bottom-to-top 
     # for the request phase, so RequestId is the outermost (earliest).
     app.add_middleware(SessionContextMiddleware)
