@@ -24,7 +24,7 @@ async def create_session(
         value=str(session.session_id),
         httponly=True,
         secure=True,        # REQUIRED for production
-        samesite="lax"     # REQUIRED for cross-origin
+        samesite="none"     # REQUIRED for cross-origin
     )
 
     return session
