@@ -31,7 +31,6 @@ async def create_session(
             httponly=True,
             secure=True,        # required for HTTPS (Render + Vercel)
             samesite="none",    # required for cross-origin
-            domain=".onrender.com",   # 🔥 CRITICAL FIX
             path="/",
         )
 
