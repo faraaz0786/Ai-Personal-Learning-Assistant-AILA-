@@ -24,7 +24,20 @@ async def check_db_connectivity() -> bool:
     logger.info(f"🔍 Starting Production DB Health Check on: {masked_url}")
     
     # 1. Test DNS Resolution (Prefer IPv4)
-    hostname = db_url.split('@')[-1].split(':')[0]
+    # Aggressive Auto-Correction for Supabase Connectivity Issues
+    # Re-apply the same logic from Settings.validate_database_url for consistency
+    import re
+    project_ref = "eapmxlzuszoknkkoegmc"
+    if "pooler.supabase.com" in db_url or ":6543" in db_url:
+        logger.warning("⚠️  [DB_GUARD] Diagnostic tool detected problematic pooler configuration. Forcing direct host redirect.")
+        db_url = re.sub(r"@[^/:]+(:[0-9]+)?", f"@db.{project_ref}.supabase.co:5432", db_url)
+        db_url = db_url.replace(f"postgres.{project_ref}", "postgres")
+        
+    if "ssl=require" not in db_url:
+        separator = "&" if "?" in db_url else "?"
+        db_url = f"{db_url}{separator}ssl=require"
+
+    hostname = db_url.split("@")[1].split(":")[0].split("/")[0]
     try:
         logger.info(f"🌐 Resolving hostname: {hostname}")
         # AF_INET forces IPv4

@@ -66,10 +66,31 @@ class Settings(BaseSettings):
     @field_validator("database_url", mode="after")
     @classmethod
     def validate_database_url(cls, v: str) -> str:
-        # Supabase Direct connectivity (port 5432) requires explicit SSL
+        # Aggressive Auto-Correction for Supabase Connectivity Issues
+        import re
+        
+        # 1. Detect Project Ref (eapmxlzuszoknkkoegmc)
+        project_ref = "eapmxlzuszoknkkoegmc"
+        
+        # 2. If we see the failing Mumbai pooler, FORCE swap to the verified Direct Host
+        if "pooler.supabase.com" in v or ":6543" in v:
+            print(f"⚠️  [DB_GUARD] Detected problematic pooler configuration. Forcing direct host redirect.")
+            # Use regex to replace the host and port while keeping user/pass/db
+            # Format: postgresql+asyncpg://user:pass@host:port/db
+            v = re.sub(r"@[^/:]+(:[0-9]+)?", f"@db.{project_ref}.supabase.co:5432", v)
+            
+            # Ensure standard username (no dot-notation for direct connection)
+            v = v.replace(f"postgres.{project_ref}", "postgres")
+            
+        # 3. Always enforce SSL and disable prepared statement cache for stability
         if "ssl" not in v:
             separator = "&" if "?" in v else "?"
             v = f"{v}{separator}ssl=require"
+        
+        if "prepared_statement_cache_size=0" not in v:
+            separator = "&" if "?" in v else "?"
+            v = f"{v}{separator}prepared_statement_cache_size=0"
+            
         return v
 
     @model_validator(mode="after")
