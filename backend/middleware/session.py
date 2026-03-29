@@ -20,8 +20,14 @@ class SessionContextMiddleware(BaseHTTPMiddleware):
                 session_id=request.state.session_id
             )
             return await call_next(request)
-        except AppError:
-            raise
+        except AppError as e:
+            # ✅ Directly return the app error's response
+            return safe_error_response(
+                status_code=e.status_code,
+                code=e.code,
+                message=e.message,
+                details=e.details,
+            )
         except Exception as e:
             logger.error("Unhandled exception in SessionContextMiddleware downstream", exc_info=e)
             return safe_error_response(
@@ -29,3 +35,4 @@ class SessionContextMiddleware(BaseHTTPMiddleware):
                 code="INTERNAL_SERVER_ERROR",
                 message="An unexpected error occurred processing the request.",
             )
+

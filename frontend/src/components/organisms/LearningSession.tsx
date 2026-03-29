@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { 
   History, 
   Sparkles, 
@@ -161,15 +161,15 @@ export function LearningSession() {
                   : "Begin an enquiry to track your path to mastery."
                 }
               </p>
-          <Link to="/quiz" className="block w-full">
-            <Button 
-              variant="outline" 
-              className="w-full rounded-xl py-3 text-sm font-bold border-surface-border text-primary-600 hover:border-primary-300 group"
-            >
-              Take Mastery Quiz
-              <ChevronRight size={14} className="ml-2 group-hover:translate-x-0.5 transition-transform" />
-            </Button>
-          </Link>
+              <Button 
+                variant="outline" 
+                className="w-full rounded-xl py-3 text-sm font-bold border-surface-border text-primary-600 hover:border-primary-300 group"
+                onClick={handleGenerateQuiz}
+                disabled={!response?.topic_id || quizMutation.isPending}
+              >
+                {quizMutation.isPending ? "Generating..." : "Take Mastery Quiz"}
+                <ChevronRight size={14} className="ml-2 group-hover:translate-x-0.5 transition-transform" />
+              </Button>
             </div>
           </section>
         </aside>

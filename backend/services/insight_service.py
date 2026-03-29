@@ -2,7 +2,8 @@ from uuid import UUID
 from repositories.topic_repository import TopicRepository
 from repositories.quiz_attempt_repository import QuizAttemptRepository
 from services.ai.mentor_tip_generator import MentorTipGenerator
-from schemas.insight import MentorTipSchema
+from services.ai.insight_generator import InsightGenerator
+from schemas.insight import MentorTipSchema, QuizInsightSchema
 
 
 class InsightService:
@@ -12,10 +13,12 @@ class InsightService:
         topic_repo: TopicRepository,
         attempt_repo: QuizAttemptRepository,
         mentor_tip_generator: MentorTipGenerator,
+        insight_generator: InsightGenerator,
     ) -> None:
         self.topic_repo = topic_repo
         self.attempt_repo = attempt_repo
         self.mentor_tip_generator = mentor_tip_generator
+        self.insight_generator = insight_generator
 
     async def get_mentor_tip(self, session_id: str) -> MentorTipSchema:
         topics = await self.topic_repo.list_by_session_id(UUID(session_id), limit=1)
@@ -40,4 +43,24 @@ class InsightService:
             topic=current_topic,
             accuracy=average_score,
             recent_activity=history_desc,
+        )
+
+    async def generate_quiz_insights(
+        self, topic_id: UUID, score: int, total: int
+    ) -> QuizInsightSchema:
+        topic_model = await self.topic_repo.get_by_id(topic_id)
+        if not topic_model:
+            # Fallback for robustness
+            return QuizInsightSchema(
+                feedback="Excellent effort! Keep pushing your boundaries.",
+                focus_area="Review",
+                next_steps="Review the core concepts and try again."
+            )
+
+        accuracy = (score / total) * 100 if total > 0 else 0
+        return await self.insight_generator.generate(
+            topic=topic_model.normalized_topic,
+            score=score,
+            total=total,
+            accuracy=accuracy
         )

@@ -23,9 +23,10 @@ async def create_session(
         key="aila_session",
         value=str(session.session_id),
         httponly=True,
-        samesite="none",
-        secure=True,
+        secure=True,        # REQUIRED for production
+        samesite="lax"     # REQUIRED for cross-origin
     )
+
     return session
 
 

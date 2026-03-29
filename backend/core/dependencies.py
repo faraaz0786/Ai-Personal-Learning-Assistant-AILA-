@@ -147,6 +147,7 @@ def get_insight_service(
         topic_repo=TopicRepository(db),
         attempt_repo=QuizAttemptRepository(db),
         mentor_tip_generator=get_mentor_tip_generator(),
+        insight_generator=get_insight_generator(),
     )
 
 
