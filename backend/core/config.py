@@ -32,7 +32,7 @@ class Settings(BaseSettings):
 
     # Supabase PostgreSQL via Supavisor connection pooler
     database_url: str = Field(
-        default="postgresql+asyncpg://postgres.eapmxlzuszoknkkoegmc:[YOUR-PASSWORD]@aws-0-ap-south-1.pooler.supabase.com:6543/postgres",
+        default="postgresql+asyncpg://postgres.eapmxlzuszoknkkoegmc:[YOUR-PASSWORD]@eapmxlzuszoknkkoegmc.supabase.co:6543/postgres",
         alias="DATABASE_URL",
     )
 
@@ -65,16 +65,12 @@ class Settings(BaseSettings):
 
     @field_validator("database_url", mode="after")
     @classmethod
-    def validate_database_url(cls, value: str) -> str:
-        if "[YOUR-PASSWORD]" in value:
-            return value
-        
-        # 🔥 Mandatory for Supabase transaction mode pooler (port 6543)
-        if ":6543" in value and "prepared_statement_cache_size=0" not in value:
-            separator = "&" if "?" in value else "?"
-            return f"{value}{separator}prepared_statement_cache_size=0"
-            
-        return value
+    def validate_database_url(cls, v: str) -> str:
+        # Mandatory for Supabase transaction mode pooler (port 6543)
+        if ":6543" in v and "prepared_statement_cache_size=0" not in v:
+            separator = "&" if "?" in v else "?"
+            v = f"{v}{separator}prepared_statement_cache_size=0"
+        return v
 
     @model_validator(mode="after")
     def validate_config(self) -> "Settings":
