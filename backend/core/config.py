@@ -101,24 +101,14 @@ def get_settings() -> Settings:
     try:
         settings = Settings()
         
-        # 🌐 PRODUCTION FIX: Resolve Hostname to IP to bypass IPv6 Routing Issues
+        # 🧪 DIAGNOSTIC LOGGING: Log DB Host for production debugging
         if settings.environment.lower() == "production":
-            import socket
-            from urllib.parse import urlparse, urlunparse
-            
+            from urllib.parse import urlparse
             try:
                 parsed = urlparse(settings.database_url)
-                if parsed.hostname and not parsed.hostname.replace('.', '').isdigit():
-                    print(f"🌐 Resolving {parsed.hostname} to IPv4...", flush=True)
-                    # Force IPv4 resolution
-                    ip_address = socket.gethostbyname(parsed.hostname)
-                    print(f"📍 Resolved to: {ip_address}", flush=True)
-                    
-                    # Rebuild URL with IP
-                    netloc = parsed.netloc.replace(parsed.hostname, ip_address)
-                    settings.database_url = urlunparse(parsed._replace(netloc=netloc))
-            except Exception as e:
-                print(f"⚠️ IPv4 Resolution failed (falling back to original): {e}", flush=True)
+                print(f"⚙️ Connecting to Database Host: {parsed.hostname}", flush=True)
+            except:
+                pass
 
         if isinstance(settings.cors_origins, str):
             settings.cors_origins = [
