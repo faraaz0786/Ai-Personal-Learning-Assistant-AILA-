@@ -24,8 +24,14 @@ async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle events."""
     # ✅ Auto-create database tables if they don't exist
     # Helps with initial production deployment on Render/Supabase
-    from models.base import Base
     from db.session import engine
+    from models.base import Base
+    # 🔥 IMPORT ALL MODELS to ensure metadata picks them up for create_all
+    from models.explanation import ExplanationModel
+    from models.quiz import QuizModel
+    from models.quiz_attempt import QuizAttemptModel
+    from models.session import SessionModel
+    from models.topic import TopicModel
     
     try:
         async with engine.begin() as conn:
