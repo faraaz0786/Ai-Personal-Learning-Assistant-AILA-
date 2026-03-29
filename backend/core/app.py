@@ -22,6 +22,18 @@ from middleware.session import SessionContextMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle events."""
+    # ✅ Auto-create database tables if they don't exist
+    # Helps with initial production deployment on Render/Supabase
+    from models.base import Base
+    from db.session import engine
+    
+    try:
+        async with engine.begin() as conn:
+            await conn.run_sync(Base.metadata.create_all)
+        print("✅ Database tables verified/created.")
+    except Exception as e:
+        print(f"❌ Database initialization failed: {str(e)}")
+        
     yield
 
 

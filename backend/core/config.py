@@ -59,7 +59,22 @@ class Settings(BaseSettings):
                 return False
         return bool(value)
 
+    @field_validator("database_url", mode="after")
+    @classmethod
+    def validate_database_url(cls, value: str) -> str:
+        if "[YOUR-PASSWORD]" in value:
+            return value
+        return value
+
     @model_validator(mode="after")
+    def validate_config(self) -> "Settings":
+        if self.environment == "production":
+            if "[YOUR-PASSWORD]" in self.database_url:
+                raise ValueError(
+                    "DATABASE_URL contains the '[YOUR-PASSWORD]' placeholder. "
+                    "Please set the actual DATABASE_URL in your Render environment variables."
+                )
+        return self
     def validate_groq_config(self) -> "Settings":
         if self.llm_provider == "groq":
             if not self.groq_api_key or self.groq_api_key == "not_used":

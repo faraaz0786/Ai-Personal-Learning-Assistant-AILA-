@@ -101,9 +101,11 @@ async def unhandled_exception_handler(request: Request, exc: Exception) -> JSONR
             "error": str(exc),
         }
     )
+    # In production, we still want to see the error type and message for debugging this specific 500
+    # but we avoid full tracebacks.
     return safe_error_response(
         status_code=500,
         code="INTERNAL_SERVER_ERROR",
-        message="An unexpected error occurred.",
+        message=f"An unexpected error occurred: {exc.__class__.__name__}",
         details=serialize_exception(exc),
     )

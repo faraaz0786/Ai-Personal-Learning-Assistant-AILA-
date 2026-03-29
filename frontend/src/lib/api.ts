@@ -1,9 +1,9 @@
-export const BASE_URL = import.meta.env.VITE_API_URL!;
+export const BASE_URL = import.meta.env.VITE_API_URL!.replace(/\/$/, "");
 
 export const apiFetch = async (endpoint: string, options?: RequestInit) => {
-  // Ensure leading slash ONLY (no trailing slash enforcement)
-  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-  const url = `${BASE_URL}${path}`;
+  // Ensure we don't have double slashes and endpoint is clean
+  const cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  const url = `${BASE_URL}${cleanEndpoint}`;
 
   const method = options?.method || "GET";
 
