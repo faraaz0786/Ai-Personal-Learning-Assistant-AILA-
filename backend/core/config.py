@@ -78,7 +78,7 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def validate_config(self) -> "Settings":
-        if self.environment == "production":
+        if self.environment.lower() == "production":
             if "[YOUR-PASSWORD]" in self.database_url:
                 raise ValueError(
                     "DATABASE_URL contains the '[YOUR-PASSWORD]' placeholder. "
@@ -100,6 +100,26 @@ class Settings(BaseSettings):
 def get_settings() -> Settings:
     try:
         settings = Settings()
+        
+        # 🌐 PRODUCTION FIX: Resolve Hostname to IP to bypass IPv6 Routing Issues
+        if settings.environment.lower() == "production":
+            import socket
+            from urllib.parse import urlparse, urlunparse
+            
+            try:
+                parsed = urlparse(settings.database_url)
+                if parsed.hostname and not parsed.hostname.replace('.', '').isdigit():
+                    print(f"🌐 Resolving {parsed.hostname} to IPv4...", flush=True)
+                    # Force IPv4 resolution
+                    ip_address = socket.gethostbyname(parsed.hostname)
+                    print(f"📍 Resolved to: {ip_address}", flush=True)
+                    
+                    # Rebuild URL with IP
+                    netloc = parsed.netloc.replace(parsed.hostname, ip_address)
+                    settings.database_url = urlunparse(parsed._replace(netloc=netloc))
+            except Exception as e:
+                print(f"⚠️ IPv4 Resolution failed (falling back to original): {e}", flush=True)
+
         if isinstance(settings.cors_origins, str):
             settings.cors_origins = [
                 origin.strip()
