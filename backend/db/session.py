@@ -13,6 +13,7 @@ engine = create_async_engine(
     future=True,
     connect_args={
         "command_timeout": 10,
+        "ssl": "require",  # 🔥 Force SSL for Supabase Pooler identification
         "server_settings": {
             "application_name": "AILA-Backend"
         }

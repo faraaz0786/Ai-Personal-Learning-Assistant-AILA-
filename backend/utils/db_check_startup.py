@@ -45,7 +45,10 @@ async def check_db_connectivity() -> bool:
     # 2. Test Engine Connection
     try:
         # We create a temporary engine just for the check
-        engine = create_async_engine(db_url)
+        engine = create_async_engine(
+            db_url,
+            connect_args={"ssl": "require", "command_timeout": 10}
+        )
         async with engine.connect() as conn:
             await conn.execute("SELECT 1")
         await engine.dispose()
