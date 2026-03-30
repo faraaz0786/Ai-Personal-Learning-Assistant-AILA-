@@ -61,23 +61,18 @@ async def check_db_connectivity() -> bool:
             logger.info(f"⏳ DNS Attempt {attempt+1} postponed: {e}")
             if attempt < max_retries - 1:
                 await asyncio.sleep(2)
-            else:
-                logger.warning(f"⚠️ DNS resolution could not verify {hostname} during startup (will retry on first request)")
-
-    # 2. Test Engine Connection
+    """Bulletproof db check with local timeout."""
+    from db.session import engine
+    from sqlalchemy import text
     try:
-        # We create a temporary engine just for the check
-        engine = create_async_engine(
-            db_url,
-            connect_args={"ssl": "require", "command_timeout": 10}
-        )
         async with engine.connect() as conn:
-            await conn.execute("SELECT 1")
-        await engine.dispose()
-        logger.info("✅ Database connection successful!")
-        return True
+            # Check for basic connectivity
+            await conn.execute(text("SELECT 1"))
+            # Check if sessions table actually exists
+            await conn.execute(text("SELECT count(*) FROM sessions"))
+            logger.info("✅ Database connection and sessions table check successful!")
+            return True
     except Exception as e:
-        # Downgrade to warning since we are in non-blocking mode
         logger.warning(f"⚠️ Startup connection check failed: {str(e)}")
         if "Network is unreachable" in str(e) or "ETIMEDOUT" in str(e):
             logger.info("💡 CAUSE: Network interface partially ready. The app will automatically connect when the first request arrives.")

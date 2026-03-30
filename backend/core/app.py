@@ -22,25 +22,40 @@ from middleware.session import SessionContextMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle events."""
-    # ✅ Consolidated model registration and table creation
-    from models import Base
-    from db.session import engine
-    
     try:
+        from core import redis as redis_client
+        await redis_client.connect()
+        print("✅ [LIFESPAN] Redis connection initialized.")
+    except Exception as e:
+        print(f"⚠️ [LIFESPAN] Redis initialization warning: {e}")
+
+    try:
+        import asyncio
         from utils.db_check_startup import check_db_connectivity
-        db_ok = await check_db_connectivity()
+        # Strict timeout to prevent boot hang
+        db_ok = await asyncio.wait_for(check_db_connectivity(), timeout=15)
         
         if not db_ok:
-            print("⚠️ WARNING: Database check failed during startup. Proceeding anyway (will retry on first request).")
+            print("⚠️ WARNING: Database check failed during startup.")
         
+        # Explicitly import all models to populate Base.metadata
+        from models import Base, SessionModel, ExplanationModel, QuizModel, QuizAttemptModel, TopicModel
+        from db.session import engine
+        
+        print("🛠️ [DB_GUARD] Verifying schema...")
         async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.create_all)
-        print("✅ [DB_GUARD] Schema verification (create_all) completed.")
+            await asyncio.wait_for(conn.run_sync(Base.metadata.create_all), timeout=20)
+        print("✅ [DB_GUARD] Schema verification completed.")
+    except asyncio.TimeoutError:
+        print("⏳ [DB_GUARD] Database initialization timed out. Proceeding in degraded mode.")
     except Exception as e:
-        print(f"⚠️ Non-critical database initialization error: {str(e)}")
-        print("💡 The app will attempt to connect again during the first API request.")
+        print(f"⚠️ [DB_GUARD] Database initialization error: {str(e)}")
         
     yield
+    
+    # Shutdown logic
+    from core import redis as redis_client
+    await redis_client.close()
 
 
 def create_app() -> FastAPI:

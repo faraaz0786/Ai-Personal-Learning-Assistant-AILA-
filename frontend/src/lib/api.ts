@@ -18,10 +18,21 @@ export const apiFetch = async (endpoint: string, options?: RequestInit) => {
     headers["Content-Type"] = "application/json";
   }
 
-  return fetch(url, {
-    ...options,
-    method,
-    credentials: "include", // 🔥 REQUIRED for cookies
-    headers,
-  });
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      method,
+      credentials: "include",
+      headers,
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+    return response;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    throw error;
+  }
 };
