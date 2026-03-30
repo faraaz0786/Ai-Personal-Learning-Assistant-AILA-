@@ -43,6 +43,11 @@ export function AppBootstrap({ children }: AppBootstrapProps) {
         <p className="text-gray-500 max-w-sm">
           We couldn't establish a secure learning session. This usually happens if the backend is still waking up.
         </p>
+        {(createSessionMutation.error as any)?.details && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-100 rounded text-xs text-red-800 font-mono max-w-lg break-all">
+            Detail: {(createSessionMutation.error as any).details}
+          </div>
+        )}
         <button 
           onClick={() => createSessionMutation.mutate()}
           className="px-6 py-2 bg-black text-white rounded-full hover:bg-gray-800 transition-colors"

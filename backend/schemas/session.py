@@ -5,7 +5,8 @@ from pydantic import BaseModel, Field
 
 
 class SessionResponse(BaseModel):
-    session_id: UUID = Field(alias="id")
+    id: UUID
+    session_id: UUID  # Backward compatibility for frontend
     created_at: datetime
     last_active_at: datetime
 

@@ -20,6 +20,7 @@ class SessionService:
 
             return SessionResponse(
                 id=model.id,
+                session_id=model.id,
                 created_at=model.created_at or datetime.now(timezone.utc),
                 last_active_at=model.last_active_at or datetime.now(timezone.utc),
             )
@@ -44,6 +45,7 @@ class SessionService:
 
             return SessionResponse(
                 id=updated.id,
+                session_id=updated.id,
                 created_at=updated.created_at or datetime.now(timezone.utc),
                 last_active_at=updated.last_active_at or datetime.now(timezone.utc),
             )

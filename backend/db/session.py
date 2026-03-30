@@ -10,6 +10,8 @@ engine = create_async_engine(
     settings.database_url, 
     pool_pre_ping=True, 
     pool_recycle=3600,
+    pool_size=3,
+    max_overflow=2,
     future=True,
     connect_args={
         "command_timeout": 10,

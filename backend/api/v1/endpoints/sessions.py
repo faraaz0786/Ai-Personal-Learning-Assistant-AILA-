@@ -41,8 +41,18 @@ async def create_session(
         return session
 
     except Exception as e:
-        print("🔥 SESSION ERROR:", str(e))
-        raise e
+        import traceback
+        err_detail = f"{type(e).__name__}: {str(e)}"
+        print(f"🔥 [CRITICAL] SESSION ENDPOINT ERROR: {err_detail}")
+        traceback.print_exc()
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": "SESSION_INITIALIZATION_FAILED",
+                "message": "The backend failed to initialize a secure session. Please check DB/Redis connectivity.",
+                "details": err_detail
+            }
+        )
 
 @router.get("/{session_id}", response_model=SessionResponse)
 async def get_session(

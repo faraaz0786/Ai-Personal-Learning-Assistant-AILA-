@@ -18,7 +18,11 @@ class BaseRepository(Generic[ModelT]):
         with timing_tracker.measure("db"):
             self.session.add(instance)
             await self.session.flush()
-            await self.session.refresh(instance)
+            try:
+                await self.session.refresh(instance)
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).warning(f"Could not refresh instance: {e}")
             return instance
 
     async def delete(self, instance: ModelT) -> None:
