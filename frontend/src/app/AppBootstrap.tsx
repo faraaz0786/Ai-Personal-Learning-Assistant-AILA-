@@ -45,7 +45,7 @@ export function AppBootstrap({ children }: AppBootstrapProps) {
         </p>
         {(createSessionMutation.error as any)?.details && (
           <div className="mt-4 p-3 bg-red-50 border border-red-100 rounded text-xs text-red-800 font-mono max-w-lg break-all">
-            Detail: {(createSessionMutation.error as any).details}
+            Diagnostic: {(createSessionMutation.error as any).details}
           </div>
         )}
         <button 
