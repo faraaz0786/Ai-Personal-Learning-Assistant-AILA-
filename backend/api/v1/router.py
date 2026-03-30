@@ -19,3 +19,7 @@ api_router.include_router(quizzes.router, prefix="/quizzes", tags=["quizzes"])
 api_router.include_router(progress.router, prefix="/progress", tags=["progress"])
 api_router.include_router(library.router, prefix="/library", tags=["library"])
 api_router.include_router(insights.router, prefix="/insights", tags=["insights"])
+
+@api_router.get("/", tags=["root"])
+async def api_v1_root():
+    return {"version": "v1", "status": "active"}
