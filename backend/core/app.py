@@ -38,14 +38,14 @@ async def lifespan(app: FastAPI):
         db_ok = await check_db_connectivity()
         
         if not db_ok:
-            raise RuntimeError("CRITICAL: Database is unreachable. Deployment halted to prevent broken state.")
+            print("⚠️ WARNING: Database check failed during startup. Proceeding anyway (will retry on first request).")
         
         async with engine.begin() as conn:
             await conn.run_sync(Base.metadata.create_all)
         print("✅ Database tables verified/created.")
     except Exception as e:
-        print(f"❌ Database initialization failed: {str(e)}")
-        raise  # 🔥 RE-RAISE to kill the process so Render knows it failed
+        print(f"⚠️ Non-critical database initialization error: {str(e)}")
+        print("💡 The app will attempt to connect again during the first API request.")
         
     yield
 

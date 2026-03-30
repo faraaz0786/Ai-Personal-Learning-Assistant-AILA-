@@ -23,9 +23,8 @@ async def check_db_connectivity() -> bool:
     masked_url = db_url.split('@')[-1]
     logger.info(f"🔍 Starting Production DB Health Check on: {masked_url}")
     
-    # 1. Test DNS Resolution (Prefer IPv4)
+    # 1. Test DNS Resolution (Prefer IPv4) with RETRY
     # Aggressive Auto-Correction for Supabase Connectivity Issues
-    # Re-apply the same logic from Settings.validate_database_url for consistency
     import re
     project_ref = "eapmxlzuszoknkkoegmc"
     if "pooler.supabase.com" in db_url or ":6543" in db_url:
@@ -38,22 +37,30 @@ async def check_db_connectivity() -> bool:
         db_url = f"{db_url}{separator}ssl=require"
 
     hostname = db_url.split("@")[1].split(":")[0].split("/")[0]
-    try:
-        logger.info(f"🌐 Resolving hostname: {hostname}")
-        # AF_INET forces IPv4
-        addrs = socket.getaddrinfo(hostname, None, family=socket.AF_INET)
-        for addr in addrs:
-            logger.info(f"📍 Resolved IPv4: {addr[4][0]}")
-    except Exception as e:
-        logger.error(f"❌ DNS Resolution Failed for {hostname}: {str(e)}")
-        # Check if it resolves at all (might be IPv6 only?)
+    
+    max_retries = 3
+    for attempt in range(max_retries):
         try:
-            any_addrs = socket.getaddrinfo(hostname, None)
-            for addr in any_addrs:
-                logger.warning(f"⚠️ Found non-IPv4 address: {addr[4][0]} (Family: {addr[0]})")
-        except:
-            pass
-        return False
+            logger.info(f"🌐 Resolving hostname: {hostname} (Attempt {attempt+1}/{max_retries})")
+            # AF_INET forces IPv4 to avoid Render egress issues with IPv6
+            addrs = socket.getaddrinfo(hostname, None, family=socket.AF_INET)
+            for addr in addrs:
+                logger.info(f"📍 Resolved IPv4: {addr[4][0]}")
+            break  # Success!
+        except Exception as e:
+            logger.warning(f"⏳ DNS Attempt {attempt+1} failed: {e}")
+            if attempt < max_retries - 1:
+                import time
+                time.sleep(1)
+            else:
+                logger.error(f"❌ DNS Resolution permanently failed for {hostname}: {e}")
+                # Log any available IPv6 addresses for debugging
+                try:
+                    any_addrs = socket.getaddrinfo(hostname, None)
+                    for addr in any_addrs:
+                        logger.warning(f"⚠️ Found non-IPv4 address: {addr[4][0]} (Family: {addr[0]})")
+                except:
+                    pass
 
     # 2. Test Engine Connection
     try:
