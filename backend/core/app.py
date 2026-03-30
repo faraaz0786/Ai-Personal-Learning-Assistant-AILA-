@@ -22,16 +22,9 @@ from middleware.session import SessionContextMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle events."""
-    # ✅ Auto-create database tables if they don't exist
-    # Helps with initial production deployment on Render/Supabase
+    # ✅ Consolidated model registration and table creation
+    from models import Base
     from db.session import engine
-    from models.base import Base
-    # 🔥 IMPORT ALL MODELS to ensure metadata picks them up for create_all
-    from models.explanation import ExplanationModel
-    from models.quiz import QuizModel
-    from models.quiz_attempt import QuizAttemptModel
-    from models.session import SessionModel
-    from models.topic import TopicModel
     
     try:
         from utils.db_check_startup import check_db_connectivity
@@ -41,8 +34,9 @@ async def lifespan(app: FastAPI):
             print("⚠️ WARNING: Database check failed during startup. Proceeding anyway (will retry on first request).")
         
         async with engine.begin() as conn:
+            # This is safe to run multiple times; it won't drop existing data
             await conn.run_sync(Base.metadata.create_all)
-        print("✅ Database tables verified/created.")
+        print("✅ [DB_GUARD] Schema verification complete: Tables are ready.")
     except Exception as e:
         print(f"⚠️ Non-critical database initialization error: {str(e)}")
         print("💡 The app will attempt to connect again during the first API request.")
