@@ -116,10 +116,15 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     try:
+        # 🚀 AUTO-DETECT RENDER / PRODUCTION
+        if os.getenv("RENDER"):
+            os.environ["ENVIRONMENT"] = "production"
+            
         settings = Settings()
         
         # 🧪 DIAGNOSTIC LOGGING: Log DB Host for production debugging
-        if settings.environment.lower() == "production":
+        env_name = settings.environment.lower()
+        if env_name == "production":
             from urllib.parse import urlparse
             try:
                 parsed = urlparse(settings.database_url)

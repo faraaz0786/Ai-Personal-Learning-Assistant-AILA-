@@ -23,17 +23,18 @@ async def create_session(
         settings = get_settings()
         
         is_prod = settings.environment == "production"
+        cookie_secure = is_prod
+        cookie_samesite = "none" if is_prod else "lax"
         
-        print("🚀 Creating session...")
+        print(f"🚀 Creating session (Env: {settings.environment}, Secure: {cookie_secure}, SameSite: {cookie_samesite})")
         session = await session_service.generate_new_session()
-        print("✅ Session created:", session)
 
         response.set_cookie(
             key="aila_session",
             value=str(session.session_id),
             httponly=True,
-            secure=is_prod,     # Only Secure in production (HTTPS)
-            samesite="none" if is_prod else "lax", 
+            secure=cookie_secure,
+            samesite=cookie_samesite,
             path="/",
         )
 
