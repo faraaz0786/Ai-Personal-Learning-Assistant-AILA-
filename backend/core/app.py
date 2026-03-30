@@ -34,9 +34,8 @@ async def lifespan(app: FastAPI):
             print("⚠️ WARNING: Database check failed during startup. Proceeding anyway (will retry on first request).")
         
         async with engine.begin() as conn:
-            # This is safe to run multiple times; it won't drop existing data
             await conn.run_sync(Base.metadata.create_all)
-        print("✅ [DB_GUARD] Schema verification complete: Tables are ready.")
+        print("✅ [DB_GUARD] Schema verification (create_all) completed.")
     except Exception as e:
         print(f"⚠️ Non-critical database initialization error: {str(e)}")
         print("💡 The app will attempt to connect again during the first API request.")

@@ -3,7 +3,7 @@ import type { SessionResponse } from "../types/api";
 
 export async function createSession() {
   try {
-    const response = await apiFetch("/sessions", { method: "POST" });
+    const response = await apiFetch("/sessions/", { method: "POST" });
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
