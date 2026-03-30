@@ -93,6 +93,7 @@ def create_app() -> FastAPI:
     app.add_exception_handler(Exception, unhandled_exception_handler)
 
     @app.get("/", tags=["root"])
+    @app.head("/", include_in_schema=False)
     async def root() -> dict[str, str]:
         return {"message": "AILA backend is running."}
 
