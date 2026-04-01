@@ -66,13 +66,14 @@ class Settings(BaseSettings):
     @field_validator("database_url", mode="after")
     @classmethod
     def validate_database_url(cls, v: str) -> str:
-        """Add required connection params for PostgreSQL. Skip for SQLite."""
-        # Apply SSL and Cache params ONLY for PostgreSQL
+        """Add required asyncpg connection params for PostgreSQL. Skip for SQLite.
+        
+        NOTE: SSL is configured via connect_args in db/session.py, NOT here.
+        Do NOT add ssl=require to the URL — asyncpg doesn't support it as a
+        URL parameter and it breaks PgBouncer/Supabase pooler authentication.
+        """
         if "sqlite" not in v.lower():
-            if "ssl" not in v:
-                separator = "&" if "?" in v else "?"
-                v = f"{v}{separator}ssl=require"
-            
+            # prepared_statement_cache_size=0 is required for PgBouncer/Supabase pooler
             if "prepared_statement_cache_size=0" not in v:
                 separator = "&" if "?" in v else "?"
                 v = f"{v}{separator}prepared_statement_cache_size=0"
