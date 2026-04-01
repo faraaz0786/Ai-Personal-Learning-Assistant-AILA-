@@ -7,7 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 import os
 import sys
 
-print(f"📁 Loading configuration from {os.path.abspath(__file__)}", flush=True)
+print(f"Loading configuration from {os.path.abspath(__file__)}", flush=True)
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     app_host: str = Field(default="0.0.0.0", alias="APP_HOST")
     app_port: int = Field(default=8000, alias="APP_PORT")
     cors_origins: list[str] | str = Field(
-        default=["http://localhost:3000"], alias="CORS_ORIGINS"
+        default=["http://localhost:3000", "https://ai-personal-learning-assistant-aila.vercel.app"], alias="CORS_ORIGINS"
     )
     secret_key: str = Field(default="change-me", alias="SECRET_KEY")
     session_cookie_name: str = Field(
@@ -82,14 +82,15 @@ class Settings(BaseSettings):
             # Ensure standard username (no dot-notation for direct connection)
             v = v.replace(f"postgres.{project_ref}", "postgres")
             
-        # 3. Always enforce SSL and disable prepared statement cache for stability
-        if "ssl" not in v:
-            separator = "&" if "?" in v else "?"
-            v = f"{v}{separator}ssl=require"
-        
-        if "prepared_statement_cache_size=0" not in v:
-            separator = "&" if "?" in v else "?"
-            v = f"{v}{separator}prepared_statement_cache_size=0"
+        # 3. Apply SSL and Cache params ONLY for PostgreSQL
+        if "sqlite" not in v.lower():
+            if "ssl" not in v:
+                separator = "&" if "?" in v else "?"
+                v = f"{v}{separator}ssl=require"
+            
+            if "prepared_statement_cache_size=0" not in v:
+                separator = "&" if "?" in v else "?"
+                v = f"{v}{separator}prepared_statement_cache_size=0"
             
         return v
 

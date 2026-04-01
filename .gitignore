@@ -14,3 +14,8 @@ frontend/coverage/
 backend_*.log
 debug_routes.py
 .DS_Store
+*.db
+backend/test_db.py
+verify_local_db_pooler.py
+brute_db.py
+startup_final.log

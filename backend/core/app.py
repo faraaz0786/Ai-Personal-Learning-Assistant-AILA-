@@ -24,10 +24,11 @@ async def lifespan(app: FastAPI):
     """Startup / shutdown lifecycle events."""
     try:
         from core import redis as redis_client
-        await redis_client.connect()
-        print("✅ [LIFESPAN] Redis connection initialized.")
+        import asyncio
+        await asyncio.wait_for(redis_client.connect(), timeout=5)
+        print("[LIFESPAN] Redis connection initialized.")
     except Exception as e:
-        print(f"⚠️ [LIFESPAN] Redis initialization warning: {e}")
+        print(f"!! [LIFESPAN] Redis initialization warning: {e}")
 
     try:
         import asyncio
@@ -42,14 +43,14 @@ async def lifespan(app: FastAPI):
         from models import Base, SessionModel, ExplanationModel, QuizModel, QuizAttemptModel, TopicModel
         from db.session import engine
         
-        print("🛠️ [DB_GUARD] Verifying schema...")
+        print("[DB_GUARD] Verifying schema...")
         async with engine.begin() as conn:
             await asyncio.wait_for(conn.run_sync(Base.metadata.create_all), timeout=20)
-        print("✅ [DB_GUARD] Schema verification completed.")
+        print("[DB_GUARD] Schema verification completed.")
     except asyncio.TimeoutError:
         print("⏳ [DB_GUARD] Database initialization timed out. Proceeding in degraded mode.")
     except Exception as e:
-        print(f"⚠️ [DB_GUARD] Database initialization error: {str(e)}")
+        print(f"!! [DB_GUARD] Database initialization error: {str(e)}")
         
     yield
     

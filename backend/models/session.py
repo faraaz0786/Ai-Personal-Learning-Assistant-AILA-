@@ -1,8 +1,7 @@
 from datetime import datetime
 from uuid import UUID as PyUUID
 
-from sqlalchemy import DateTime, func
-from sqlalchemy.dialects.postgresql import JSONB, UUID
+from sqlalchemy import DateTime, func, JSON, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from models.base import Base
@@ -18,4 +17,4 @@ class SessionModel(Base):
     last_active_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
-    metadata_: Mapped[dict] = mapped_column("metadata", JSONB, default=dict)
+    metadata_: Mapped[dict] = mapped_column("metadata", JSON, default=dict)

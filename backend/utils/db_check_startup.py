@@ -30,37 +30,40 @@ async def check_db_connectivity() -> bool:
     await asyncio.sleep(5)
 
     # 1. Test DNS Resolution with IPv4 Preference and RETRY
-    import re
-    project_ref = "eapmxlzuszoknkkoegmc"
-    
-    # Correction logic (redundant but safe)
-    if "pooler.supabase.com" in db_url or ":6543" in db_url:
-        db_url = re.sub(r"@[^/:]+(:[0-9]+)?", f"@db.{project_ref}.supabase.co:5432", db_url)
-        db_url = db_url.replace(f"postgres.{project_ref}", "postgres")
+    if not db_url.startswith("sqlite"):
+        import re
+        project_ref = "eapmxlzuszoknkkoegmc"
         
-    hostname = db_url.split("@")[1].split(":")[0].split("/")[0]
-    
-    max_retries = 3
-    resolved_ip = None
-    for attempt in range(max_retries):
+        # Correction logic (redundant but safe)
+        if "pooler.supabase.com" in db_url or ":6543" in db_url:
+            db_url = re.sub(r"@[^/:]+(:[0-9]+)?", f"@db.{project_ref}.supabase.co:5432", db_url)
+            db_url = db_url.replace(f"postgres.{project_ref}", "postgres")
+            
         try:
-            logger.info(f"🌐 Resolving hostname: {hostname} (Attempt {attempt+1}/{max_retries})")
-            # Try IPv4 first (AF_INET)
-            try:
-                addrs = socket.getaddrinfo(hostname, None, family=socket.AF_INET)
-                resolved_ip = addrs[0][4][0]
-                logger.info(f"📍 Resolved IPv4: {resolved_ip}")
-            except:
-                # Fallback to any family (AF_UNSPEC) if IPv4 resolution fails
-                addrs = socket.getaddrinfo(hostname, None)
-                resolved_ip = addrs[0][4][0]
-                family = "IPv6" if addrs[0][0] == socket.AF_INET6 else "Unknown"
-                logger.info(f"📍 IPv4 Resolution failed, found {family}: {resolved_ip}")
-            break 
-        except Exception as e:
-            logger.info(f"⏳ DNS Attempt {attempt+1} postponed: {e}")
-            if attempt < max_retries - 1:
-                await asyncio.sleep(2)
+            hostname = db_url.split("@")[1].split(":")[0].split("/")[0]
+            max_retries = 3
+            resolved_ip = None
+            for attempt in range(max_retries):
+                try:
+                    logger.info(f"🌐 Resolving hostname: {hostname} (Attempt {attempt+1}/{max_retries})")
+                    # Try IPv4 first (AF_INET)
+                    try:
+                        addrs = socket.getaddrinfo(hostname, None, family=socket.AF_INET)
+                        resolved_ip = addrs[0][4][0]
+                        logger.info(f"📍 Resolved IPv4: {resolved_ip}")
+                    except:
+                        # Fallback to any family (AF_UNSPEC) if IPv4 resolution fails
+                        addrs = socket.getaddrinfo(hostname, None)
+                        resolved_ip = addrs[0][4][0]
+                        family = "IPv6" if addrs[0][0] == socket.AF_INET6 else "Unknown"
+                        logger.info(f"📍 IPv4 Resolution failed, found {family}: {resolved_ip}")
+                    break 
+                except Exception as e:
+                    logger.info(f"⏳ DNS Attempt {attempt+1} postponed: {e}")
+                    if attempt < max_retries - 1:
+                        await asyncio.sleep(2)
+        except (IndexError, AttributeError):
+            logger.warning("Could not extract hostname for DNS check, skipping.")
     """Bulletproof db check with local timeout."""
     from db.session import engine
     from sqlalchemy import text

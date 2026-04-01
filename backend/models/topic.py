@@ -1,5 +1,4 @@
-from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, func
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, func, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from models.base import Base
